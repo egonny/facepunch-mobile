@@ -1,8 +1,9 @@
-package com.egonny.facepunch;
+package com.egonny.facepunch.activities;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import com.egonny.facepunch.R;
 
 public class MainActivity extends Activity {
 
