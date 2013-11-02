@@ -6,13 +6,13 @@
                                         tools:context=".MainActivity">
 
     <!-- The main fragment -->
-    <FrameLayout android:id="@+id/subforum_list"
+    <FrameLayout android:id="@+id/subforum_fragment_frame"
                  android:layout_width="match_parent"
                  android:layout_height="match_parent">
     </FrameLayout>
 
     <!-- The drawer fragment -->
-    <FrameLayout android:id="@+id/forum_drawer"
+    <FrameLayout android:id="@+id/category_fragment_frame"
                  android:layout_width="240dp"
                  android:layout_height="match_parent"
                  android:layout_gravity="start"
