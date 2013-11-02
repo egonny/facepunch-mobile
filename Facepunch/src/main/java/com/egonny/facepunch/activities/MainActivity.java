@@ -1,6 +1,7 @@
 package com.egonny.facepunch.activities;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.app.Activity;
@@ -45,6 +46,15 @@ public class MainActivity extends Activity {
 	    mDrawerLayout.setDrawerListener(mDrawerToggle);
 	    getActionBar().setDisplayHomeAsUpEnabled(true);
 	    getActionBar().setHomeButtonEnabled(true);
+
+	    // Prepare fragments
+	    FragmentManager manager = getFragmentManager();
+	    mMenuFragment = (MenuFragment) manager.findFragmentByTag("menu");
+	    if (mMenuFragment == null) {
+		    mMenuFragment = new MenuFragment();
+		    mMenuFragment.setRetainInstance(true);
+		    manager.beginTransaction().add(R.id.menu_fragment_frame, mMenuFragment, "menu").commit();
+	    }
     }
 
 
@@ -58,7 +68,7 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// If the nav drawer is open, hide action items related to the content view
-		boolean drawerOpen = mDrawerLayout.isDrawerOpen(findViewById(R.id.category_fragment_frame));
+		boolean drawerOpen = mDrawerLayout.isDrawerOpen(findViewById(R.id.menu_fragment_frame));
 		return super.onPrepareOptionsMenu(menu);
 	}
 

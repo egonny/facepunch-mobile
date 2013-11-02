@@ -1,4 +1,4 @@
-package com.egonny.facepunch.model;
+package com.egonny.facepunch.model.facepunch;
 
 public class User {
 	public enum UserGroup {REGULAR, GOLD, MOD, BANNED}

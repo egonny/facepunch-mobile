@@ -1,6 +1,9 @@
-package com.egonny.facepunch.model;
+package com.egonny.facepunch.model.facepunch;
 
-public class Subforum {
+import com.egonny.facepunch.model.menu.MenuListItem;
+import com.egonny.facepunch.util.headeradapter.HeaderListHeader;
+
+public class Subforum extends MenuListItem {
 
 	private String title;
 	private int id;
@@ -8,6 +11,7 @@ public class Subforum {
 	private int pages;
 
 	public Subforum(String title, int id) {
+		super(title);
 		this.title = title;
 		this.id = id;
 		pages = 1;
@@ -36,5 +40,10 @@ public class Subforum {
 	@Override
 	public String toString() {
 		return "Subforum: " + title + ", id=" + id;
+	}
+
+	@Override
+	public HeaderListHeader getHeader() {
+		return category;
 	}
 }

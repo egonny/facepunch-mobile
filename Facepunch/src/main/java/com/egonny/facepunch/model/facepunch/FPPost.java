@@ -1,4 +1,4 @@
-package com.egonny.facepunch.model;
+package com.egonny.facepunch.model.facepunch;
 
 import java.util.Comparator;
 import java.util.Iterator;

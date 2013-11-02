@@ -1,6 +1,6 @@
 package com.egonny.facepunch.util;
 
-import com.egonny.facepunch.model.*;
+import com.egonny.facepunch.model.facepunch.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

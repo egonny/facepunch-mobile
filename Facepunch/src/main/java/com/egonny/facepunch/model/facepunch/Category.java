@@ -1,14 +1,17 @@
-package com.egonny.facepunch.model;
+package com.egonny.facepunch.model.facepunch;
+
+import com.egonny.facepunch.model.menu.MenuListHeader;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Category {
+public class Category extends MenuListHeader {
 
 	private String name;
 	private List<Subforum> subforums;
 
 	public Category(String name) {
+		super(name);
 		this.name = name;
 		this.subforums = new ArrayList<Subforum>();
 	}
