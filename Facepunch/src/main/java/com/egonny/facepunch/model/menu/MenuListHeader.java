@@ -6,7 +6,7 @@ import android.widget.TextView;
 import com.egonny.facepunch.R;
 import com.egonny.facepunch.util.headeradapter.HeaderListHeader;
 
-public class MenuListHeader implements HeaderListHeader {
+public abstract class MenuListHeader implements HeaderListHeader {
 
 	private String mTitle;
 

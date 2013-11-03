@@ -1,9 +1,14 @@
 package com.egonny.facepunch.model.facepunch;
 
+import android.graphics.drawable.Drawable;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.egonny.facepunch.model.menu.MenuListItem;
+import com.egonny.facepunch.model.menu.NetworkMenuListItem;
+import com.egonny.facepunch.util.ImageLoaderHelper;
 import com.egonny.facepunch.util.headeradapter.HeaderListHeader;
 
-public class Subforum extends MenuListItem {
+public class Subforum extends NetworkMenuListItem {
 
 	private String title;
 	private int id;
@@ -45,5 +50,10 @@ public class Subforum extends MenuListItem {
 	@Override
 	public HeaderListHeader getHeader() {
 		return category;
+	}
+
+	@Override
+	protected String getImageUrl() {
+		return "http://www.facepunch.com/fp/forums/" + id + ".png";
 	}
 }
