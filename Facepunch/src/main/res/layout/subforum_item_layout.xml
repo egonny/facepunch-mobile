@@ -1,11 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
+    <TextView android:layout_height="wrap_content"
               android:layout_width="match_parent"
-              android:layout_height="match_parent" android:paddingLeft="16dp" android:paddingRight="16dp"
-              android:paddingTop="8dp" android:paddingBottom="8dp">
-    <TextView android:layout_height="wrap_content" android:layout_width="match_parent"
-              android:id="@+id/subforum_item_title" android:text="Test" android:singleLine="false"
-              android:textSize="18dp" android:fontFamily="sans-serif"/>
-</LinearLayout>
+              android:id="@+id/subforum_item_title"
+              android:textColor="@android:color/secondary_text_light"
+              android:textSize="18sp"
+              android:fontFamily="sans-serif"/>
+    <TextView android:layout_height="wrap_content"
+              android:layout_width="wrap_content"
+              android:drawableLeft="@drawable/subforum_item_author"
+              android:id="@+id/subforum_item_author"
+              android:layout_below="@+id/subforum_item_title"
+              android:paddingLeft="4dp"/>
+    <TextView android:layout_height="wrap_content"
+              android:layout_width="wrap_content"
+              android:drawableLeft="@drawable/subforum_item_reading"
+              android:id="@+id/subforum_item_reading"
+              android:textColor="@android:color/secondary_text_light"
+              android:layout_toRightOf="@+id/subforum_item_author"
+              android:layout_below="@+id/subforum_item_title"
+              android:paddingLeft="12dp"/>
+    <TextView android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/subforum_item_recent"
+            android:drawableLeft="@drawable/subforum_item_recent"
+            android:layout_below="@+id/subforum_item_author"
+            android:textColor="@android:color/secondary_text_light" android:paddingLeft="3dp" android:text="test"
+            android:paddingTop="2dp" android:textSize="12dp"/>
+</RelativeLayout>

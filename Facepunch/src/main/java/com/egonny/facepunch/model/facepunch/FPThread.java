@@ -25,6 +25,10 @@ public class FPThread {
 		return title;
 	}
 
+	public User getAuthor() {
+		return author;
+	}
+
 	public long getId() {
 		return id;
 	}

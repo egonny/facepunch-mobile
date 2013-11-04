@@ -26,6 +26,19 @@ public class SubforumAdapter extends ArrayAdapter<FPThread> {
 		TextView titleTextView = (TextView) convertView.findViewById(R.id.subforum_item_title);
 		titleTextView.setText(thread.getTitle());
 
+		TextView authorTextView = (TextView) convertView.findViewById(R.id.subforum_item_author);
+		authorTextView.setText(" " + thread.getAuthor().getName());
+
+		TextView readingTextView = (TextView) convertView.findViewById(R.id.subforum_item_reading);
+		if (thread.getReading() > 0) {
+			readingTextView.setVisibility(View.VISIBLE);
+			readingTextView.setText(" " + thread.getReading());
+		}
+		else readingTextView.setVisibility(View.GONE);
+
+		TextView recentTextView = (TextView) convertView.findViewById(R.id.subforum_item_recent);
+		recentTextView.setText(" " + thread.getLastPostAuthor().getName() + ", " + thread.getLastPostDate());
+
 		return convertView;
 	}
 }
