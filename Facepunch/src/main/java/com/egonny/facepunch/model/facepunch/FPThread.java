@@ -21,6 +21,10 @@ public class FPThread {
 		this.author = author;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
 	public long getId() {
 		return id;
 	}

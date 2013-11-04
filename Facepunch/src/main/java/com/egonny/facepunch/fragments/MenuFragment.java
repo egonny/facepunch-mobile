@@ -61,6 +61,10 @@ public class MenuFragment extends ListFragment {
 		void onSubforumClick(Subforum subforum);
 	}
 
+	public void setItemClickListener(onItemClickListener listener) {
+		mListener = listener;
+	}
+
 	public void load() {
 		assert mAdapter != null;
 		if (!mAdapter.isEmpty()) mAdapter.clear();
@@ -87,7 +91,7 @@ public class MenuFragment extends ListFragment {
 	}
 
 	private void getCategories(final CategoryCallback callback) {
-		FPApplication.getInstance().getRequestQueue().add(new StringRequest("http://www.facepunch.com/forum.php",
+		FPApplication.getInstance().addToRequestQueue(new StringRequest("http://www.facepunch.com/forum.php",
 				new Response.Listener<String>() {
 					@Override
 					public void onResponse(String s) {
@@ -99,6 +103,6 @@ public class MenuFragment extends ListFragment {
 					public void onErrorResponse(VolleyError volleyError) {
 						callback.onResult(false, new ArrayList<Category>());
 					}
-				}));
+				}), "menu");
 	}
 }

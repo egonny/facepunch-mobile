@@ -1,10 +1,9 @@
 package com.egonny.facepunch.activities;
 
-import android.app.Fragment;
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
@@ -12,11 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import com.egonny.facepunch.R;
 import com.egonny.facepunch.fragments.MenuFragment;
+import com.egonny.facepunch.fragments.SubforumFragment;
+import com.egonny.facepunch.model.facepunch.Subforum;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements MenuFragment.onItemClickListener {
 
 	private MenuFragment mMenuFragment;
-	private Fragment mMainFragment;
+	private SubforumFragment mSubforumFragment;
 
 	private DrawerLayout mDrawerLayout;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -53,10 +54,22 @@ public class MainActivity extends Activity {
 	    if (mMenuFragment == null) {
 		    mMenuFragment = new MenuFragment();
 		    mMenuFragment.setRetainInstance(true);
+		    mMenuFragment.setItemClickListener(this);
 		    manager.beginTransaction().add(R.id.menu_fragment_frame, mMenuFragment, "menu").commit();
+	    }
+
+	    mSubforumFragment = (SubforumFragment) manager.findFragmentByTag("subforum");
+	    if (mSubforumFragment == null) {
+		    mSubforumFragment = new SubforumFragment();
+		    mSubforumFragment.setRetainInstance(true);
+		    manager.beginTransaction().add(R.id.subforum_fragment_frame, mSubforumFragment, "subforum").commit();
 	    }
     }
 
+	@Override
+	public void onSubforumClick(Subforum subforum) {
+		mSubforumFragment.load(subforum);
+	}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -96,5 +109,4 @@ public class MainActivity extends Activity {
 		super.onConfigurationChanged(newConfig);
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
-    
 }
