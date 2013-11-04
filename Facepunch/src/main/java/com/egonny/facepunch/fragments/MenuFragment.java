@@ -14,6 +14,7 @@ import com.egonny.facepunch.R;
 import com.egonny.facepunch.adapters.MenuAdapter;
 import com.egonny.facepunch.model.facepunch.Category;
 import com.egonny.facepunch.model.facepunch.Subforum;
+import com.egonny.facepunch.model.menu.MenuListItem;
 import com.egonny.facepunch.util.FPParser;
 import com.egonny.facepunch.util.headeradapter.HeaderListItem;
 
@@ -46,12 +47,14 @@ public class MenuFragment extends ListFragment {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		HeaderListItem item = (HeaderListItem) l.getItemAtPosition(position);
+		MenuListItem item = (MenuListItem) l.getItemAtPosition(position);
 		if (mListener != null && mAdapter.getSelectedItem() != item) {
 			if (item instanceof Subforum) {
 				mListener.onSubforumClick((Subforum) item);
 			}
 		}
+		mAdapter.setSelectedItem(item);
+		mAdapter.notifyDataSetChanged();
 	}
 
 	public interface onItemClickListener {
@@ -94,7 +97,7 @@ public class MenuFragment extends ListFragment {
 				new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError volleyError) {
-						callback.onResult(true, new ArrayList<Category>());
+						callback.onResult(false, new ArrayList<Category>());
 					}
 				}));
 	}
