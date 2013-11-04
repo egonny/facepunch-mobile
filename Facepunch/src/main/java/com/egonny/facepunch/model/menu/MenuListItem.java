@@ -34,7 +34,14 @@ public abstract class MenuListItem implements HeaderListItem {
 
 	@Override
 	public View getView(LayoutInflater inflater, View convertView) {
-		convertView = inflater.inflate(R.layout.menu_item_layout, null);
+		return loadView(inflater, inflater.inflate(R.layout.menu_item_layout, null));
+	}
+
+	public View getSelectedView(LayoutInflater inflater, View convertView) {
+		return loadView(inflater, inflater.inflate(R.layout.menu_item_layout_selected, null));
+	}
+
+	private View loadView(LayoutInflater inflater,View convertView) {
 		textView = (TextView) convertView.findViewById(R.id.menu_item_text);
 		textView.setText(mTitle);
 
