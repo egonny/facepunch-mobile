@@ -1,6 +1,7 @@
 package com.egonny.facepunch.adapters;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ public class ThreadAdapter extends ArrayAdapter<FPPost> {
 
 		FPPost post = getItem(position);
 		TextView mainTextView = (TextView) convertView.findViewById(R.id.post_message);
-		mainTextView.setText(post.getMessage());
+		mainTextView.setText(Html.fromHtml(post.getMessage()));
 
 		return convertView;
 	}

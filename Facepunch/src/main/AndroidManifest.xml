@@ -18,7 +18,8 @@
         android:theme="@style/AppTheme" >
         <activity
             android:name="com.egonny.facepunch.activities.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,10 +29,10 @@
         <activity
             android:name="com.egonny.facepunch.activities.ThreadActivity"
             android:label="@string/title_activity_thread"
-            android:parentActivityName="MainActivity" >
+            android:parentActivityName="com.egonny.facepunch.activities.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="MainActivity" />
+                android:value="com.egonny.facepunch.activities.MainActivity" />
         </activity>
     </application>
 
