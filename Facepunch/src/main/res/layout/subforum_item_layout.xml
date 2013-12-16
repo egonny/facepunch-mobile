@@ -33,6 +33,8 @@
             android:id="@+id/subforum_item_recent"
             android:drawableLeft="@drawable/subforum_item_recent"
             android:layout_below="@+id/subforum_item_author"
-            android:textColor="@android:color/secondary_text_light" android:paddingLeft="3dp" android:text="test"
-            android:paddingTop="2dp" android:textSize="12dp"/>
+            android:textColor="@android:color/secondary_text_light"
+            android:paddingLeft="3dp"
+            android:paddingTop="2dp"
+            android:textSize="12sp"/>
 </RelativeLayout>

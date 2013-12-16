@@ -8,5 +8,6 @@
     <string name="close_drawer">Close menu</string>
     <string name="drawer_open">Open menu</string>
     <string name="drawer_close">Close menu</string>
+    <string name="title_activity_thread">ThreadActivity</string>
 
 </resources>
