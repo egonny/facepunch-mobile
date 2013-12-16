@@ -1,6 +1,10 @@
 package com.egonny.facepunch.model.facepunch;
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class User implements Parcelable {
+
 	public enum UserGroup {REGULAR, GOLD, MOD, BANNED}
 
 	private final String name;
@@ -53,5 +57,40 @@ public class User {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	/* Parcel interface */
+
+	public static final Parcelable.Creator<User> CREATOR
+			= new Parcelable.Creator<User>() {
+		public User createFromParcel(Parcel in) {
+			return new User(in);
+		}
+
+		public User[] newArray(int size) {
+			return new User[size];
+		}
+	};
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(name);
+		dest.writeLong(id);
+		dest.writeString(joinDate);
+		dest.writeInt(postcount);
+		dest.writeSerializable(userGroup);
+	}
+
+	public User(Parcel in) {
+		name = in.readString();
+		id = in.readLong();
+		setJoinDate(in.readString());
+		setPostcount(in.readInt());
+		setUserGroup((UserGroup) in.readSerializable());
 	}
 }

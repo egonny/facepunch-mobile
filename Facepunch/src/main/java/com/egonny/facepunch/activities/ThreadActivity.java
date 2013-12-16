@@ -12,8 +12,12 @@ import android.view.ViewGroup;
 import android.os.Build;
 import com.egonny.facepunch.R;
 import com.egonny.facepunch.fragments.ThreadFragment;
+import com.egonny.facepunch.model.facepunch.FPThread;
 
 public class ThreadActivity extends Activity {
+
+	ThreadFragment mFragment;
+	FPThread mThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,14 +25,24 @@ public class ThreadActivity extends Activity {
         setContentView(R.layout.activity_thread);
 
         if (savedInstanceState == null) {
+	        mFragment = new ThreadFragment();
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, new ThreadFragment())
+                    .add(R.id.container, mFragment)
                     .commit();
+	        getFragmentManager().executePendingTransactions();
+	        mThread = (FPThread) getIntent().getExtras().get("thread");
         }
     }
 
+	@Override
+	protected void onStart() {
+		super.onStart();
+		if (mFragment.getThread() == null) {
+			mFragment.load(mThread);
+		}
+	}
 
-    @Override
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         
         // Inflate the menu; this adds items to the action bar if it is present.

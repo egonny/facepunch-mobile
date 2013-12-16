@@ -2,6 +2,7 @@ package com.egonny.facepunch.activities;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -12,9 +13,10 @@ import android.view.View;
 import com.egonny.facepunch.R;
 import com.egonny.facepunch.fragments.MenuFragment;
 import com.egonny.facepunch.fragments.SubforumFragment;
+import com.egonny.facepunch.model.facepunch.FPThread;
 import com.egonny.facepunch.model.facepunch.Subforum;
 
-public class MainActivity extends Activity implements MenuFragment.onItemClickListener {
+public class MainActivity extends Activity implements MenuFragment.onItemClickListener, SubforumFragment.onItemClickListener {
 
 	private MenuFragment mMenuFragment;
 	private SubforumFragment mSubforumFragment;
@@ -62,6 +64,7 @@ public class MainActivity extends Activity implements MenuFragment.onItemClickLi
 	    if (mSubforumFragment == null) {
 		    mSubforumFragment = new SubforumFragment();
 		    mSubforumFragment.setRetainInstance(true);
+		    mSubforumFragment.setItemClickListener(this);
 		    manager.beginTransaction().add(R.id.subforum_fragment_frame, mSubforumFragment, "subforum").commit();
 	    }
     }
@@ -69,6 +72,13 @@ public class MainActivity extends Activity implements MenuFragment.onItemClickLi
 	@Override
 	public void onSubforumClick(Subforum subforum) {
 		mSubforumFragment.load(subforum);
+	}
+
+	@Override
+	public void onThreadClick(FPThread thread) {
+		Intent intent = new Intent(this, ThreadActivity.class);
+		intent.putExtra("thread", thread);
+		startActivity(intent);
 	}
 
     @Override

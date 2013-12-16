@@ -1,5 +1,6 @@
 package com.egonny.facepunch.fragments;
 
+import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.egonny.facepunch.FPApplication;
 import com.egonny.facepunch.R;
+import com.egonny.facepunch.activities.ThreadActivity;
 import com.egonny.facepunch.adapters.ThreadAdapter;
 import com.egonny.facepunch.model.facepunch.FPPost;
 import com.egonny.facepunch.model.facepunch.FPThread;
@@ -28,19 +30,19 @@ public class ThreadFragment extends ListFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_thread, container, false);
-	}
-
-	public void onStart() {
-		super.onStart();
 		if (mAdapter == null) {
 			setAdapter(new ThreadAdapter(getActivity()));
 		}
+		return inflater.inflate(R.layout.fragment_thread, container, false);
 	}
 
 	public void setAdapter(ThreadAdapter adapter) {
 		mAdapter = adapter;
 		setListAdapter(adapter);
+	}
+
+	public FPThread getThread() {
+		return mThread;
 	}
 
 	public void load(FPThread thread) {

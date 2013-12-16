@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.ListView;
 import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -16,6 +17,7 @@ import com.egonny.facepunch.adapters.SubforumAdapter;
 import com.egonny.facepunch.model.facepunch.FPPost;
 import com.egonny.facepunch.model.facepunch.FPThread;
 import com.egonny.facepunch.model.facepunch.Subforum;
+import com.egonny.facepunch.model.menu.MenuListItem;
 import com.egonny.facepunch.util.FPParser;
 
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ import java.util.List;
 public class SubforumFragment extends ListFragment implements AbsListView.OnScrollListener {
 
 	private SubforumAdapter mAdapter;
-	private onThreadClickListener mListener;
+	private onItemClickListener mListener;
 
 	private Subforum mSubforum;
 	private int mCurrentPage;
@@ -61,8 +63,21 @@ public class SubforumFragment extends ListFragment implements AbsListView.OnScro
 		// Must be empty
 	}
 
-	public interface onThreadClickListener {
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		FPThread item = (FPThread) l.getItemAtPosition(position);
+		if (mListener != null) {
+			mListener.onThreadClick(item);
+		}
+	}
+
+	public interface onItemClickListener {
 		void onThreadClick(FPThread thread);
+	}
+
+	public void setItemClickListener(onItemClickListener listener) {
+		mListener = listener;
 	}
 
 	public void load(Subforum subforum) {

@@ -1,6 +1,9 @@
 package com.egonny.facepunch.model.facepunch;
 
-public class FPThread {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class FPThread implements Parcelable {
 
 	private final String title;
 	private final long id;
@@ -100,5 +103,54 @@ public class FPThread {
 	@Override
 	public String toString() {
 		return "Thread: " + title + " by " + author.toString() + ", id = " + id;
+	}
+
+	/* Parcel interface */
+
+	public static final Parcelable.Creator<FPThread> CREATOR
+			= new Parcelable.Creator<FPThread>() {
+		public FPThread createFromParcel(Parcel in) {
+			return new FPThread(in);
+		}
+
+		public FPThread[] newArray(int size) {
+			return new FPThread[size];
+		}
+	};
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(title);
+		dest.writeLong(id);
+		dest.writeParcelable(author, 0);
+		dest.writeByte((byte) (locked ? 1 : 0));
+		dest.writeByte((byte) (old ? 1 : 0));
+		dest.writeByte((byte) (sticky ? 1 : 0));
+		dest.writeInt(pages);
+		dest.writeInt(reading);
+		dest.writeParcelable(lastPostAuthor, 0);
+		dest.writeString(lastPostDate);
+		dest.writeInt(newPosts);
+		dest.writeString(description);
+	}
+
+	public FPThread(Parcel in) {
+		title = in.readString();
+		id = in.readLong();
+		author = in.readParcelable(User.class.getClassLoader());
+		setLocked(in.readByte() != 0);
+		setOld(in.readByte() != 0);
+		setSticky(in.readByte() != 0);
+		setPages(in.readInt());
+		setReading(in.readInt());
+		setLastPostAuthor((User) in.readParcelable(User.class.getClassLoader()));
+		setLastPostDate(in.readString());
+		setNewPosts(in.readInt());
+		description = in.readString();
 	}
 }
