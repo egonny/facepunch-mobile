@@ -153,7 +153,7 @@ public class FPParser {
 			}
 			String userGroupColor = element.select("div.username_container a strong font").attr("color");
 			String postcountText = element.select("div#userstats").first().childNode(2).toString();
-			Matcher postcountMatcher = userIdPattern.matcher(postcountText);
+			Matcher postcountMatcher = postcountPattern.matcher(postcountText);
 			int postcount = -1;
 			if (postcountMatcher.find()) {
 					postcount = Integer.parseInt(postcountMatcher.group().replace(",", ""));
