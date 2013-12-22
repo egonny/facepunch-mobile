@@ -1,6 +1,5 @@
 package com.egonny.facepunch.fragments;
 
-import android.app.Activity;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,7 +10,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.egonny.facepunch.FPApplication;
 import com.egonny.facepunch.R;
-import com.egonny.facepunch.activities.ThreadActivity;
 import com.egonny.facepunch.adapters.ThreadAdapter;
 import com.egonny.facepunch.model.facepunch.FPPost;
 import com.egonny.facepunch.model.facepunch.FPThread;
@@ -65,6 +63,14 @@ public class ThreadFragment extends ListFragment {
 		});
 	}
 
+	public void reload(int page) {
+		load(mThread, page);
+	}
+
+	public void reload() {
+		load(mThread, mTopPage);
+	}
+
 	private void loadNext() {
 		getPosts(++mBottomPage, new ThreadCallback() {
 			@Override
@@ -79,6 +85,10 @@ public class ThreadFragment extends ListFragment {
 
 	private void loadPrevious() {
 		//TODO implement this later
+	}
+
+	public int getCurrentPage() {
+		return mTopPage;
 	}
 
 	private interface ThreadCallback {

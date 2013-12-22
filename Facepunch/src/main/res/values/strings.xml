@@ -9,5 +9,8 @@
     <string name="drawer_open">Open menu</string>
     <string name="drawer_close">Close menu</string>
     <string name="title_activity_thread">ThreadActivity</string>
+	<string name="jump_to_page_OK">OK</string>
+	<string name="jump_to_page">Jump to page</string>
+	<string name="jump_to_page_cancel">Cancel</string>
 
 </resources>

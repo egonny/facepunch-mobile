@@ -2,7 +2,9 @@ package com.egonny.facepunch.activities;
 
 import android.app.Activity;
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.NumberPicker;
 import com.egonny.facepunch.R;
 import com.egonny.facepunch.fragments.ThreadFragment;
 import com.egonny.facepunch.model.facepunch.FPThread;
@@ -46,6 +49,34 @@ public class ThreadActivity extends Activity {
 		}
 	}
 
+	private void switchPage() {
+		// Show login dialog
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		// Get the layout inflater
+		builder.setTitle(R.string.jump_to_page);
+
+		final NumberPicker picker = new NumberPicker(this);
+		picker.setMinValue(1);
+		picker.setMaxValue(mFragment.getThread().getPages());
+		picker.setValue(mFragment.getCurrentPage());
+		picker.setWrapSelectorWheel(false);
+		builder.setView(picker)
+				// Add action buttons
+				.setPositiveButton(R.string.jump_to_page_OK, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(final DialogInterface dialog, int id) {
+						mFragment.reload(picker.getValue());
+					}
+				})
+				.setNegativeButton(R.string.jump_to_page_cancel, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+		AlertDialog dialog = builder.create();
+		dialog.show();
+	}
+
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         
@@ -62,6 +93,8 @@ public class ThreadActivity extends Activity {
 	    switch (item.getItemId()) {
 		    case R.id.action_settings:
 			    return true;
+		    case R.id.jump_to_page:
+			    switchPage();
 	    }
         return super.onOptionsItemSelected(item);
     }

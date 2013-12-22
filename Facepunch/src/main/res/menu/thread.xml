@@ -1,7 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.egonny.facepunch.activities.ThreadActivity" >
-    
+
+	<item android:id="@+id/jump_to_page"
+	      android:title="@string/jump_to_page"
+	      android:icon="@drawable/ic_action_page"
+	      android:orderInCategory="1"
+		  android:showAsAction="ifRoom"/>
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"

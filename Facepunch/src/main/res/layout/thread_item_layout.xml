@@ -1,10 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!-- TODO: clean up XML -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
-    <TextView android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:id="@+id/post_message"/>
+              android:layout_height="match_parent"
+			  android:paddingLeft="6dp"
+			  android:paddingRight="6dp"
+			  android:paddingTop="2dp"
+			  android:paddingBottom="2dp">
+	<LinearLayout android:orientation="vertical"
+				  android:layout_width="match_parent"
+				  android:layout_height="wrap_content"
+				  android:background="@drawable/card_background" android:paddingTop="16dp" android:paddingBottom="8dp">
+		<!-- Post header -->
+		<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:paddingLeft="16dp"
+				android:paddingRight="24dp"
+				android:paddingBottom="8dp">
+			<ImageView
+					android:layout_width="54dp"
+					android:layout_height="54dp"
+					android:id="@+id/post_author_image"
+					android:scaleType="centerCrop"
+					android:layout_marginRight="8dp"/>
+			<!-- Post author layout -->
+			<RelativeLayout
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_toRightOf="@+id/post_author_image"
+					android:layout_alignTop="@+id/post_author_image"
+					android:layout_alignBottom="@+id/post_author_image" android:gravity="center_vertical">
+				<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:id="@+id/post_author_name"
+						android:textSize="18sp"
+						android:layout_marginBottom="2dp"/>
+				<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:id="@+id/post_author_nbposts"
+						android:layout_below="@+id/post_author_name"/>
+				<TextView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:id="@+id/post_date"
+						android:layout_alignParentRight="true"
+						android:layout_alignBaseline="@+id/post_author_name"/>
+			</RelativeLayout>
+		</RelativeLayout>
+		<TextView android:layout_width="match_parent"
+		          android:layout_height="wrap_content"
+		          android:id="@+id/post_message" android:paddingLeft="24dp" android:paddingRight="24dp"
+				/>
+	</LinearLayout>
 </LinearLayout>

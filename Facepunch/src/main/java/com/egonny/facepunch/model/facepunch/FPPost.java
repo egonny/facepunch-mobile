@@ -21,6 +21,18 @@ public class FPPost {
 		this.postTime = postTime;
 	}
 
+	public long getId() {
+		return id;
+	}
+
+	public User getAuthor() {
+		return author;
+	}
+
+	public String getPostTime() {
+		return postTime;
+	}
+
 	public String getMessage() {
 		return message;
 	}
