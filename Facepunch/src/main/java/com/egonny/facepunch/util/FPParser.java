@@ -151,7 +151,11 @@ public class FPParser {
 			if (authorIdMatcher.find()) {
 				authorId = Long.parseLong(authorIdMatcher.group());
 			}
-			String userGroupColor = element.select("div.username_container a strong font").attr("color");
+			String userGroupColor = element.select("div.username_container a font").attr("color");
+			// Moderator check
+			if (userGroupColor.equals("") && !element.select("div.username_container a span").attr("style").equals("")) {
+				userGroupColor = "#00aa00";
+			}
 			String postcountText = element.select("div#userstats").first().childNode(2).toString();
 			Matcher postcountMatcher = postcountPattern.matcher(postcountText);
 			int postcount = -1;

@@ -3,6 +3,7 @@ package com.egonny.facepunch.adapters;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
@@ -43,6 +44,11 @@ public class ThreadAdapter extends ArrayAdapter<FPPost> {
 		});
 		TextView authorName = (TextView) convertView.findViewById(R.id.post_author_name);
 		authorName.setText(post.getAuthor().getName());
+		if (post.getAuthor().getUserGroup().getColor() != -1) {
+			authorName.setTextColor(getContext().getResources().getColor(post.getAuthor().getUserGroup().getColor()));
+		} else {
+			authorName.setTextColor(getContext().getResources().getColor(R.color.thread_primary));
+		}
 		TextView authorNbPosts = (TextView) convertView.findViewById(R.id.post_author_nbposts);
 		authorNbPosts.setText(Integer.toString(post.getAuthor().getPostcount()) + " Posts");
 		TextView postDate = (TextView) convertView.findViewById(R.id.post_date);

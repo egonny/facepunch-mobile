@@ -2,10 +2,23 @@ package com.egonny.facepunch.model.facepunch;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.egonny.facepunch.R;
 
 public class User implements Parcelable {
 
-	public enum UserGroup {REGULAR, GOLD, MOD, BANNED}
+	public enum UserGroup {
+		REGULAR(-1), GOLD(R.color.gold_user), MOD(R.color.mod_user), BANNED(R.color.FP_red);
+
+		int color;
+
+		UserGroup(int color) {
+			this.color = color;
+		}
+
+		public int getColor() {
+			return color;
+		}
+	}
 
 	private final String name;
 	private final long id;
@@ -35,7 +48,13 @@ public class User implements Parcelable {
 	}
 
 	public void setUserGroup(String color) {
-
+		if (color.equals("#A06000")) {
+			setUserGroup(UserGroup.GOLD);
+		} else if (color.equals("#00aa00")) {
+			setUserGroup(UserGroup.MOD);
+		} else if (color.equals("red")) {
+			setUserGroup(UserGroup.BANNED);
+		}
 	}
 
 	public String getJoinDate() {

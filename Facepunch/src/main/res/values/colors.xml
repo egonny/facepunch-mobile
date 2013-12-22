@@ -1,4 +1,14 @@
 <resources>
 	<color name="FP_red">#ff950001</color>
 	<color name="dark_gray">#ff1f1f1f</color>
+	<color name="light_gray">#ffd1d1d1</color>
+	<color name="weak_yellow">#fff1ed84</color>
+	<color name="weak_purple">#8888aa</color>
+	<color name="regular_user">#114477</color>
+	<color name="gold_user">#ac793e</color>
+	<color name="mod_user">#009900</color>
+	<color name="thread_background">#e5e5e5</color>
+	<color name="thread_secondary">#666666</color>
+	<color name="thread_primary">#333333</color>
+	<color name="lighter_gray">#eeeeee</color>
 </resources>

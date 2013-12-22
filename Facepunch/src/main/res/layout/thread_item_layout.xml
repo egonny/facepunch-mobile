@@ -10,7 +10,7 @@
 			  android:paddingBottom="2dp"
 			  android:clickable="false"
 			  android:focusable="false"
-			  android:longClickable="false">
+			  android:longClickable="false" android:background="@color/thread_background">
 	<LinearLayout android:orientation="vertical"
 				  android:layout_width="match_parent"
 				  android:layout_height="wrap_content"
@@ -35,25 +35,33 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_toRightOf="@+id/post_author_image"
-					android:layout_alignTop="@+id/post_author_image"
-					android:layout_alignBottom="@+id/post_author_image" android:gravity="center_vertical">
-				<TextView
-						android:layout_width="wrap_content"
+					android:gravity="center_vertical" android:layout_alignTop="@+id/post_author_image"
+					android:layout_alignBottom="@+id/post_author_image">
+				<LinearLayout
+						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:id="@+id/post_author_name"
-						android:textSize="18sp"
-						android:layout_marginBottom="2dp"/>
+						android:id="@+id/post_header_firstrow"
+						android:orientation="horizontal">
+					<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:id="@+id/post_author_name"
+							android:textSize="18sp"
+							android:layout_weight="1"
+							android:layout_marginBottom="2dp" android:singleLine="true"
+							android:textColor="@color/thread_primary"/>
+					<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_weight="0"
+							android:id="@+id/post_date" android:textColor="@color/thread_secondary"/>
+				</LinearLayout>
 				<TextView
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:id="@+id/post_author_nbposts"
-						android:layout_below="@+id/post_author_name"/>
-				<TextView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:id="@+id/post_date"
-						android:layout_alignParentRight="true"
-						android:layout_alignBaseline="@+id/post_author_name"/>
+						android:layout_below="@+id/post_header_firstrow" android:textColor="@color/thread_secondary"/>
+
 			</RelativeLayout>
 		</RelativeLayout>
 		<TextView android:layout_width="match_parent"
