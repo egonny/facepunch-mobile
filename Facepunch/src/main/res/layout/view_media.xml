@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- TODO: this can be done more efficiently -->
+    <ImageView android:layout_width="match_parent"
+               android:layout_height="match_parent" android:id="@+id/media_background"/>
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:layout_marginLeft="36dp" android:layout_marginTop="16dp" android:id="@+id/media_title"
+                  android:fontFamily="sans-serif" android:singleLine="true" android:textSize="18sp"/>
+        <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
+                     android:background="@null" android:layout_centerInParent="true" android:id="@+id/media_button"/>
+    </RelativeLayout>
+</merge>
