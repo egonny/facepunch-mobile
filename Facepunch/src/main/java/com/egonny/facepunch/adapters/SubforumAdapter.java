@@ -5,14 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import com.egonny.facepunch.R;
+import com.egonny.facepunch.fragments.SubforumFragment;
 import com.egonny.facepunch.model.facepunch.FPThread;
 
 public class SubforumAdapter extends ArrayAdapter<FPThread> {
 
+	private OnDotsClickListener mListener;
+
 	public SubforumAdapter(Context context) {
 		super(context, 0);
+	}
+
+	public void setOnDotsClickListener(OnDotsClickListener listener) {
+		mListener = listener;
 	}
 
 	@Override
@@ -22,7 +30,7 @@ public class SubforumAdapter extends ArrayAdapter<FPThread> {
 			convertView = inflater.inflate(R.layout.subforum_item_layout, null);
 		}
 
-		FPThread thread = getItem(position);
+		final FPThread thread = getItem(position);
 		TextView titleTextView = (TextView) convertView.findViewById(R.id.subforum_item_title);
 		titleTextView.setText(thread.getTitle());
 
@@ -39,6 +47,21 @@ public class SubforumAdapter extends ArrayAdapter<FPThread> {
 		TextView recentTextView = (TextView) convertView.findViewById(R.id.subforum_item_recent);
 		recentTextView.setText(" " + thread.getLastPostAuthor().getName() + ", " + thread.getLastPostDate());
 
+		ImageButton dots = (ImageButton) convertView.findViewById(R.id.subforum_item_dots);
+		dots.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (mListener != null) {
+					mListener.onClick(view, thread);
+				}
+			}
+		});
+
 		return convertView;
 	}
+
+	public interface OnDotsClickListener {
+		void onClick(View view, FPThread thread);
+	}
+
 }

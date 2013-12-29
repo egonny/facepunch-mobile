@@ -3,10 +3,12 @@ package com.egonny.facepunch.fragments;
 import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,7 +25,7 @@ import com.egonny.facepunch.util.FPParser;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubforumFragment extends ListFragment implements AbsListView.OnScrollListener {
+public class SubforumFragment extends ListFragment implements AbsListView.OnScrollListener, SubforumAdapter.OnDotsClickListener {
 
 	private SubforumAdapter mAdapter;
 	private onItemClickListener mListener;
@@ -47,6 +49,7 @@ public class SubforumFragment extends ListFragment implements AbsListView.OnScro
 	public void setAdapter(SubforumAdapter adapter) {
 		mAdapter = adapter;
 		setListAdapter(adapter);
+		mAdapter.setOnDotsClickListener(this);
 	}
 
 	@Override
@@ -70,6 +73,15 @@ public class SubforumFragment extends ListFragment implements AbsListView.OnScro
 		if (mListener != null) {
 			mListener.onThreadClick(item);
 		}
+	}
+
+	@Override
+	public void onClick(View view, FPThread thread) {
+		PopupMenu popup = new PopupMenu(getActivity(), view);
+		Menu menu = popup.getMenu();
+		menu.add("test1");
+		menu.add("test2");
+		popup.show();
 	}
 
 	public interface onItemClickListener {
