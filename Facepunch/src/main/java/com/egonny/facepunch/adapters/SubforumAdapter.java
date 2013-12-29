@@ -56,6 +56,7 @@ public class SubforumAdapter extends ArrayAdapter<FPThread> {
 				}
 			}
 		});
+		dots.setFocusable(false);
 
 		return convertView;
 	}

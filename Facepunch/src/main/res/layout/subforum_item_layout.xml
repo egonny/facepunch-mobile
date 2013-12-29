@@ -8,6 +8,7 @@
         android:paddingRight="16dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
+        android:descendantFocusability="blocksDescendants"
         android:orientation="horizontal">
     <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="1">
         <TextView android:layout_height="wrap_content"
@@ -45,6 +46,4 @@
             android:layout_height="wrap_content"
             android:id="@+id/subforum_item_dots" android:layout_weight="0" android:layout_gravity="center_vertical"
             android:src="@drawable/overflow_icon" android:background="@null"/>
-
-
 </LinearLayout>
