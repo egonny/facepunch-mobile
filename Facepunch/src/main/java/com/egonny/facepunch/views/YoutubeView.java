@@ -18,10 +18,12 @@ import org.json.JSONObject;
 
 public class YoutubeView extends MediaView {
 
+
+
 	public YoutubeView(Context context) {
 		super(context);
-		ImageButton button = (ImageButton) findViewById(R.id.media_button);
-		button.setImageResource(R.drawable.youtube_icon);
+
+		mButton.setImageResource(R.drawable.youtube_icon);
 	}
 
 	public void load(String id) {
@@ -49,9 +51,10 @@ public class YoutubeView extends MediaView {
 				showErrorScreen();
 				return;
 			}
-			TextView title = (TextView) findViewById(R.id.media_title);
-			title.setText(video.getString("title"));
-			final ImageView background = (ImageView) findViewById(R.id.media_background);
+
+			mTitle.setText(video.getString("title"));
+			mAuthor.setText(video.getString("channelTitle"));
+			final ImageView background = mBackground;
 			ImageLoaderHelper.getInstance().getBitmap(video.getJSONObject("thumbnails").getJSONObject("maxres").getString("url"),
 					new ImageLoaderHelper.ImageCallback() {
 						@Override

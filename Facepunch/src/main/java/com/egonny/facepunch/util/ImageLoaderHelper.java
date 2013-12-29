@@ -38,7 +38,7 @@ public class ImageLoaderHelper {
 		mImageLoader.get(url, new ImageLoader.ImageListener() {
 			@Override
 			public void onResponse(ImageLoader.ImageContainer imageContainer, boolean b) {
-				callback.onResult(true, imageContainer.getBitmap());
+					callback.onResult(true, imageContainer.getBitmap());
 			}
 
 			@Override

@@ -2,12 +2,29 @@
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- TODO: this can be done more efficiently -->
-    <ImageView android:layout_width="match_parent"
-               android:layout_height="match_parent" android:id="@+id/media_background"/>
-    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
+    <ImageView android:layout_width="match_parent" android:layout_height="wrap_content"
+               android:id="@+id/media_background"
+               android:scaleType="centerCrop"
+               android:adjustViewBounds="true" android:maxHeight="@dimen/view_media_max_height"/>
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent"
+            android:background="@drawable/shade_gradient">
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                  android:layout_marginLeft="36dp" android:layout_marginTop="16dp" android:id="@+id/media_title"
-                  android:fontFamily="sans-serif" android:singleLine="true" android:textSize="18sp"/>
+                  android:layout_marginLeft="24dp" android:layout_marginRight="24dp" android:layout_marginTop="8dp"
+                  android:id="@+id/media_title"
+                  android:ellipsize="end"
+                  android:fontFamily="sans-serif-light"
+                  android:textColor="@android:color/white"
+                  android:singleLine="true"
+                  android:textSize="18sp"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:layout_marginLeft="24dp" android:layout_marginRight="24dp"
+                  android:layout_below="@id/media_title"
+                  android:id="@+id/media_author"
+                  android:ellipsize="end"
+                  android:fontFamily="sans-serif-light"
+                  android:textColor="@android:color/white"
+                  android:singleLine="true"
+                  android:textSize="14sp"/>
         <ImageButton android:layout_width="wrap_content" android:layout_height="wrap_content"
                      android:background="@null" android:layout_centerInParent="true" android:id="@+id/media_button"/>
     </RelativeLayout>

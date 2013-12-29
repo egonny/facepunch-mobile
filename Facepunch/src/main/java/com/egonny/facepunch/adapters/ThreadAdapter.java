@@ -13,12 +13,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.egonny.facepunch.R;
 import com.egonny.facepunch.model.facepunch.FPPost;
+import com.egonny.facepunch.util.HTMLPostParser;
 import com.egonny.facepunch.util.ImageLoaderHelper;
 import org.xml.sax.XMLReader;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ThreadAdapter extends ArrayAdapter<FPPost> {
 	public ThreadAdapter(Context context) {
@@ -27,8 +32,8 @@ public class ThreadAdapter extends ArrayAdapter<FPPost> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		if (convertView == null) {
-			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.thread_item_layout, null);
 		}
 		FPPost post = getItem(position);
@@ -54,8 +59,14 @@ public class ThreadAdapter extends ArrayAdapter<FPPost> {
 		TextView postDate = (TextView) convertView.findViewById(R.id.post_date);
 		postDate.setText(post.getPostTime());
 
-		TextView message = (TextView) convertView.findViewById(R.id.post_message);
-		message.setText(Html.fromHtml(post.getMessage()));
+//		Commented out since normal parsing will probably not work perfectly yet
+//
+//		TextView message = (TextView) convertView.findViewById(R.id.post_message);
+//		message.setText(Html.fromHtml(post.getMessage()));
+		LinearLayout message = (LinearLayout) convertView.findViewById(R.id.post_message);
+		message.removeAllViews();
+		List<View> messageViews = HTMLPostParser.parse(inflater, post.getMessage());
+		for (View view: messageViews) message.addView(view);
 
 		return convertView;
 	}

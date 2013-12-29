@@ -64,9 +64,10 @@
 
 			</RelativeLayout>
 		</RelativeLayout>
-		<TextView android:layout_width="match_parent"
+		<LinearLayout android:layout_width="match_parent"
 		          android:layout_height="wrap_content"
-		          android:id="@+id/post_message" android:paddingLeft="24dp" android:paddingRight="24dp"
-				/>
+		          android:id="@+id/post_message"
+                  android:orientation="vertical">
+        </LinearLayout>
 	</LinearLayout>
 </LinearLayout>
