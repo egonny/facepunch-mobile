@@ -10,7 +10,7 @@
 			  android:paddingBottom="2dp"
 			  android:clickable="false"
 			  android:focusable="false"
-			  android:longClickable="false" android:background="@color/thread_background">
+			  android:longClickable="false">
 	<LinearLayout android:orientation="vertical"
 				  android:layout_width="match_parent"
 				  android:layout_height="wrap_content"
