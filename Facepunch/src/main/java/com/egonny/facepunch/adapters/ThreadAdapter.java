@@ -59,10 +59,6 @@ public class ThreadAdapter extends ArrayAdapter<FPPost> {
 		TextView postDate = (TextView) convertView.findViewById(R.id.post_date);
 		postDate.setText(post.getPostTime());
 
-//		Commented out since normal parsing will probably not work perfectly yet
-//
-//		TextView message = (TextView) convertView.findViewById(R.id.post_message);
-//		message.setText(Html.fromHtml(post.getMessage()));
 		LinearLayout message = (LinearLayout) convertView.findViewById(R.id.post_message);
 		message.removeAllViews();
 		List<View> messageViews = HTMLPostParser.parse(inflater, post.getMessage());

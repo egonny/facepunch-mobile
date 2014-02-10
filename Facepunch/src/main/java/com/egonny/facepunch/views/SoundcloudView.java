@@ -1,7 +1,9 @@
 package com.egonny.facepunch.views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -14,10 +16,18 @@ import org.json.JSONObject;
 
 public class SoundcloudView extends MediaView {
 
+	String mUrl;
+
 	public SoundcloudView(Context context) {
 		super(context);
 
 		mButton.setImageResource(R.drawable.soundcloud_icon);
+	}
+
+	@Override
+	protected void onClick() {
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
+		getContext().startActivity(intent);
 	}
 
 	public void load(String url) {
@@ -35,6 +45,7 @@ public class SoundcloudView extends MediaView {
 						showErrorScreen();
 					}
 				}));
+		mUrl = url;
 	}
 
 	private void parse(JSONObject object) {

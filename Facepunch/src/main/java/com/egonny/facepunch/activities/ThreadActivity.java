@@ -59,7 +59,7 @@ public class ThreadActivity extends Activity {
 		picker.setMinValue(1);
 		picker.setMaxValue(mFragment.getThread().getPages());
 		picker.setValue(mFragment.getCurrentPage());
-		picker.setWrapSelectorWheel(false);
+		picker.setWrapSelectorWheel(true);
 		builder.setView(picker)
 				// Add action buttons
 				.setPositiveButton(R.string.jump_to_page_OK, new DialogInterface.OnClickListener() {

@@ -1,7 +1,9 @@
 package com.egonny.facepunch.views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,12 +20,18 @@ import org.json.JSONObject;
 
 public class YoutubeView extends MediaView {
 
-
+	private String mId;
 
 	public YoutubeView(Context context) {
 		super(context);
 
 		mButton.setImageResource(R.drawable.youtube_icon);
+	}
+
+	@Override
+	protected void onClick() {
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube://" + mId));
+		getContext().startActivity(intent);
 	}
 
 	public void load(String id) {
@@ -41,6 +49,7 @@ public class YoutubeView extends MediaView {
 								showErrorScreen();
 							}}
 		));
+		mId = id;
 	}
 
 	private void parse(JSONObject jsonObject) {
