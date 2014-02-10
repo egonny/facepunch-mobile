@@ -82,12 +82,6 @@ public class HeaderAdapter<S extends HeaderListHeader, T extends HeaderListItem,
 		mHeaderList.remove(header);
 	}
 
-	//TODO aanvullen zodat het checkt of Headers bepaalde items toegevoegd of verwijderd hebben
-	@Override
-	public void notifyDataSetChanged() {
-		super.notifyDataSetChanged();
-	}
-
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
