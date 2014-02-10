@@ -4,15 +4,32 @@
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:minHeight="32dp"
+              android:minHeight="48dp"
               android:paddingLeft="12dp"
-              android:paddingRight="56dp" android:paddingTop="8dp" android:paddingBottom="8dp">
+              android:paddingTop="8dp"
+              android:paddingBottom="8dp"
+              android:paddingRight="8dp">
+    <ImageView android:layout_width="@dimen/menu_item_icon_size"
+               android:layout_height="@dimen/menu_item_icon_size"
+               android:id="@+id/menu_item_icon"
+               android:contentDescription="@string/menu_icon_desc"
+               android:layout_gravity="center_vertical"
+               android:layout_marginRight="12dp"/>
 	<TextView android:layout_height="wrap_content"
-	          android:layout_width="wrap_content"
+	          android:layout_width="0dp"
 	          android:id="@+id/menu_item_text"
-	          android:drawablePadding="8dp"
 	          android:layout_gravity="center_vertical"
 	          android:gravity="center_vertical"
 	          android:textSize="18sp"
-	          android:textColor="@android:color/white"/>
+	          android:textColor="@android:color/white"
+              android:layout_weight="1"/>
+    <TextView android:id="@+id/menu_item_counter"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@drawable/counter_bg"
+              android:textColor="@android:color/white"
+              android:layout_gravity="center_vertical"
+              android:padding="8dp"
+              android:gravity="center"
+              android:layout_marginRight="4dp" android:layout_marginLeft="4dp" android:visibility="invisible"/>
 </LinearLayout>

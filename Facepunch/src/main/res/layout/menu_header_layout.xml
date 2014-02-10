@@ -15,7 +15,9 @@
 	          android:textSize="14sp"
 	          android:textColor="@color/FP_red"
 	          android:paddingTop="15dp"
-	          android:paddingLeft="3dp" />
+	          android:paddingLeft="12dp"
+              android:singleLine="true"
+              android:textStyle="bold"/>
 
 	<View android:layout_width="fill_parent"
 	      android:layout_height="2dp"

@@ -14,7 +14,9 @@ import com.egonny.facepunch.R;
 import com.egonny.facepunch.adapters.MenuAdapter;
 import com.egonny.facepunch.model.facepunch.Category;
 import com.egonny.facepunch.model.facepunch.Subforum;
+import com.egonny.facepunch.model.menu.MenuListHeader;
 import com.egonny.facepunch.model.menu.MenuListItem;
+import com.egonny.facepunch.model.menu.MenuSubforum;
 import com.egonny.facepunch.util.FPParser;
 import com.egonny.facepunch.util.headeradapter.HeaderListItem;
 
@@ -49,8 +51,8 @@ public class MenuFragment extends ListFragment {
 		super.onListItemClick(l, v, position, id);
 		MenuListItem item = (MenuListItem) l.getItemAtPosition(position);
 		if (mListener != null && mAdapter.getSelectedItem() != item) {
-			if (item instanceof Subforum) {
-				mListener.onSubforumClick((Subforum) item);
+			if (item instanceof MenuSubforum) {
+				mListener.onSubforumClick((MenuSubforum) item);
 			}
 		}
 		mAdapter.setSelectedItem(item);
@@ -58,7 +60,7 @@ public class MenuFragment extends ListFragment {
 	}
 
 	public interface onItemClickListener {
-		void onSubforumClick(Subforum subforum);
+		void onSubforumClick(MenuSubforum subforum);
 	}
 
 	public void setItemClickListener(onItemClickListener listener) {
@@ -73,12 +75,18 @@ public class MenuFragment extends ListFragment {
 			@Override
 			public void onResult(boolean success, List<Category> categories) {
 				if (success) {
-
 					for (Category category: categories) {
-						mAdapter.addHeader(category);
+						MenuListHeader header = new MenuListHeader(category.getName());
 						for (Subforum subforum: category.getSubforums()) {
-							mAdapter.addItem(subforum);
+							if (subforum.getId() == 6) {
+								MenuSubforum x = new MenuSubforum(subforum.getTitle(), subforum.getId());
+								x.setCounter(99);
+								header.addItem(x);
+							} else {
+								header.addItem(new MenuSubforum(subforum.getTitle(), subforum.getId()));
+							}
 						}
+						mAdapter.addHeader(header);
 					}
 					mAdapter.notifyDataSetChanged();
 				}

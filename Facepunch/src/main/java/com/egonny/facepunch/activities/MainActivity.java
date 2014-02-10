@@ -15,6 +15,7 @@ import com.egonny.facepunch.fragments.MenuFragment;
 import com.egonny.facepunch.fragments.SubforumFragment;
 import com.egonny.facepunch.model.facepunch.FPThread;
 import com.egonny.facepunch.model.facepunch.Subforum;
+import com.egonny.facepunch.model.menu.MenuSubforum;
 
 public class MainActivity extends Activity implements MenuFragment.onItemClickListener, SubforumFragment.onItemClickListener {
 
@@ -70,7 +71,7 @@ public class MainActivity extends Activity implements MenuFragment.onItemClickLi
     }
 
 	@Override
-	public void onSubforumClick(Subforum subforum) {
+	public void onSubforumClick(MenuSubforum subforum) {
 		mSubforumFragment.load(subforum);
 	}
 

@@ -1,6 +1,6 @@
 <resources>
 	<color name="FP_red">#ff950001</color>
-	<color name="dark_gray">#ff1f1f1f</color>
+	<color name="dark_gray">#ff3a3a3c</color>
 	<color name="light_gray">#ffd1d1d1</color>
 	<color name="weak_yellow">#fff1ed84</color>
 	<color name="weak_purple">#8888aa</color>
@@ -11,4 +11,6 @@
 	<color name="thread_secondary">#666666</color>
 	<color name="thread_primary">#333333</color>
 	<color name="lighter_gray">#eeeeee</color>
+    <color name="menu_item_background_selected">#ff0099cc</color>
+    <color name="counter_text_bg">@color/FP_red</color>
 </resources>
