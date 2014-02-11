@@ -53,4 +53,8 @@ public class MenuListHeader implements HeaderListHeader {
 		textView.setText(getTitle());
 		return convertView;
 	}
+
+	public void clear() {
+		mItems.clear();
+	}
 }

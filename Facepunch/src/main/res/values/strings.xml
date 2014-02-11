@@ -18,6 +18,8 @@
     <!-- Menu Items, keep in order! -->
     <!-- Menu List Item Names -->
     <string name="menu_account_category">Account</string>
+    <string name="menu_error_retry_button">Retry</string>
+    <string name="menu_error_generic">Failed to load</string>
     <string-array name="menu_account_logged_in">
         <item>Messages</item>
         <item>Subscribed Threads</item>
