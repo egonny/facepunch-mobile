@@ -1,15 +1,28 @@
 package com.egonny.facepunch.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.egonny.facepunch.FPApplication;
 import com.egonny.facepunch.R;
 import com.egonny.facepunch.fragments.MenuFragment;
 import com.egonny.facepunch.fragments.SubforumFragment;
@@ -17,9 +30,17 @@ import com.egonny.facepunch.model.facepunch.FPThread;
 import com.egonny.facepunch.model.facepunch.Subforum;
 import com.egonny.facepunch.model.menu.ActionItem;
 import com.egonny.facepunch.model.menu.MenuSubforum;
+import com.egonny.facepunch.util.FPParser;
+
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends Activity implements MenuFragment.onItemClickListener, SubforumFragment.onItemClickListener {
 
+	private static final String PREFS_NAME = "MainPrefs";
 	private MenuFragment mMenuFragment;
 	private SubforumFragment mSubforumFragment;
 
@@ -80,6 +101,7 @@ public class MainActivity extends Activity implements MenuFragment.onItemClickLi
 	public void onActionClick(ActionItem.Action action) {
 		switch (action) {
 			case LOG_IN:
+				showLoginDialog();
 				break;
 			case PM:
 				break;
@@ -88,6 +110,65 @@ public class MainActivity extends Activity implements MenuFragment.onItemClickLi
 			case SUBSCRIBED:
 				break;
 		}
+	}
+
+	private void showLoginDialog() {
+		// Show login dialog
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		// Get the layout inflater
+		LayoutInflater inflater = getLayoutInflater();
+
+		builder.setTitle(R.string.login_title);
+
+		final View v = inflater.inflate(R.layout.dialog_login, null);
+		builder.setView(v)
+				// Add action buttons
+				.setPositiveButton(R.string.login_OK, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(final DialogInterface dialog, int id) {
+						EditText name = (EditText) v.findViewById(R.id.login_username);
+						EditText password = (EditText) v.findViewById(R.id.login_password);
+
+						login(name.getText().toString(), md5(password.getText().toString()));
+					}
+				})
+				.setNegativeButton(R.string.login_cancel, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+		AlertDialog dialog = builder.create();
+		dialog.show();
+	}
+
+	private String md5(String s) throws IllegalStateException {
+		try {
+			java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+			byte[] array = md.digest(s.getBytes());
+			StringBuffer sb = new StringBuffer();
+			for (byte anArray : array) {
+				sb.append(Integer.toHexString((anArray & 0xFF) | 0x100).substring(1, 3));
+			}
+			return sb.toString();
+		} catch (java.security.NoSuchAlgorithmException e) {
+			Log.e("NoSuchAlgorithmException", e.getMessage());
+		}
+		return null;
+	}
+
+	private void login(String username, String password) {
+		checkLogin(username, password, new LoginCallback() {
+			@Override
+			public void onResult(boolean success, FPParser.LoginResponse response) {
+				if (success) {
+					Toast.makeText(MainActivity.this, "Successfully logged in!", Toast.LENGTH_SHORT).show();
+				} else if (response.error == FPParser.Error.INCORRECT_USERNAME) {
+					Toast.makeText(MainActivity.this, "Failed to log in, try again later. Retry " + response.retry +" of 5", Toast.LENGTH_SHORT).show();
+				} else if (response.error == FPParser.Error.RETRIES_LIMIT_REACHED) {
+					Toast.makeText(MainActivity.this, "Failed to log in, max limit of retries reached. Retry in 15 minutes.", Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
 	}
 
 	@Override
@@ -134,5 +215,51 @@ public class MainActivity extends Activity implements MenuFragment.onItemClickLi
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
+
+	public String getSessionHash() {
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		return settings.getString("sessionHash", "");
+	}
+
+	public void setSessionHash(String hash) {
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString("sessionHash", hash);
+		editor.commit();
+	}
+
+	//TODO OMG this is ugly what am I doing
+	private void checkLogin(final String username, final String password, final LoginCallback callback) {
+		FPApplication.getInstance().addToRequestQueue(
+				new StringRequest(Request.Method.POST,
+						"http://facepunch.com/login.php?do=login",
+						new Response.Listener<String>() {
+							@Override
+							public void onResponse(String s) {
+								FPParser.LoginResponse response = FPParser.parseLogin(s);
+								callback.onResult(response.error == null, response);
+							}
+						},
+						new Response.ErrorListener() {
+							@Override
+							public void onErrorResponse(VolleyError volleyError) {
+								callback.onResult(false, null);
+							}
+						}){
+
+					protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+						Map<String, String> params = new HashMap<String, String>();
+						params.put("do", "login");
+						params.put("vb_login_username", username);
+						params.put("vb_login_md5password", password);
+						return params;
+					}
+				});
+	}
+
+	private interface LoginCallback {
+		//TODO use onSuccess, onFailure instead
+		void onResult(boolean success, FPParser.LoginResponse response);
 	}
 }

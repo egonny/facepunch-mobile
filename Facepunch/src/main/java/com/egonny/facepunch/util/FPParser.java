@@ -20,6 +20,8 @@ public class FPParser {
 
 	private static Pattern postcountPattern = Pattern.compile("(\\d|,)+");
 
+	private static Pattern loginRetryPattern = Pattern.compile("(?<=You have used )\\d");
+
 	public static List<Category> parseCategories(String html) {
 		Document doc = Jsoup.parse(html);
 		Elements elements = doc.select("table.forums");
@@ -190,5 +192,35 @@ public class FPParser {
 
 		}
 		return posts;
+	}
+
+	public static LoginResponse parseLogin(String html) {
+		Document doc = Jsoup.parse(html);
+		Element response = doc.getElementsByClass("restore").get(0);
+		LoginResponse loginResponse = new LoginResponse();
+		if (response.text().contains("You have entered an invalid username or password")) {
+			loginResponse.error = Error.INCORRECT_USERNAME;
+			Matcher m = loginRetryPattern.matcher(response.text());
+			if (m.find()) {
+				loginResponse.retry = Integer.getInteger(m.group(0));
+			} else {
+				loginResponse.retry = -1;
+			}
+		} else if (response.text().contains("failed login quota!")) {
+			loginResponse.error = Error.RETRIES_LIMIT_REACHED;
+		} else {
+			loginResponse.username = response.text().substring(26);
+		}
+		return loginResponse;
+	}
+
+	public static class LoginResponse {
+		public Error error;
+		public String username;
+		public int retry;
+	}
+	public enum Error {
+		INCORRECT_USERNAME,
+		RETRIES_LIMIT_REACHED
 	}
 }

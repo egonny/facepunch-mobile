@@ -20,6 +20,11 @@
     <string name="menu_account_category">Account</string>
     <string name="menu_error_retry_button">Retry</string>
     <string name="menu_error_generic">Failed to load</string>
+    <string name="login_title">Login</string>
+    <string name="login_OK">OK</string>
+    <string name="login_cancel">Cancel</string>
+    <string name="login_name">Name</string>
+    <string name="login_password">Password</string>
     <string-array name="menu_account_logged_in">
         <item>Messages</item>
         <item>Subscribed Threads</item>
