@@ -3,6 +3,7 @@ package com.egonny.facepunch.fragments;
 import android.app.ListFragment;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.egonny.facepunch.FPApplication;
 import com.egonny.facepunch.R;
+import com.egonny.facepunch.activities.MainActivity;
 import com.egonny.facepunch.adapters.MenuAdapter;
 import com.egonny.facepunch.model.facepunch.Category;
 import com.egonny.facepunch.model.facepunch.Subforum;
@@ -36,6 +38,8 @@ public class MenuFragment extends ListFragment {
 
 	private LinearLayout mProgressFooter;
 	private LinearLayout mErrorFooter;
+
+	private CategoryParseTask mParseTask;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -140,29 +144,25 @@ public class MenuFragment extends ListFragment {
 		refreshAccountCategory();
 		setLoading(true);
 		hideErrorScreen();
-		getCategories(new CategoryCallback() {
-			@Override
-			public void onResult(boolean success, List<Category> categories) {
-				if (success) {
-					for (Category category : categories) {
-						MenuListHeader header = new MenuListHeader(category.getName());
-						for (Subforum subforum : category.getSubforums()) {
-							if (subforum.getId() == 6) {
-								// Just a test to see if counter is working
-								MenuSubforum x = new MenuSubforum(subforum.getTitle(), subforum.getId());
-								x.setCounter(99);
-								header.addItem(x);
-							} else {
-								header.addItem(new MenuSubforum(subforum.getTitle(), subforum.getId()));
-							}
-						}
-						mAdapter.addHeader(header);
-					}
-					mAdapter.notifyDataSetChanged();
-				} else showErrorScreen(R.string.menu_error_generic);
-				setLoading(false);
+		getCategories();
+	}
+
+	private void addCategories(List<Category> categories) {
+		for (Category category : categories) {
+			MenuListHeader header = new MenuListHeader(category.getName());
+			for (Subforum subforum : category.getSubforums()) {
+				if (subforum.getId() == 6) {
+					// Just a test to see if counter is working
+					MenuSubforum x = new MenuSubforum(subforum.getTitle(), subforum.getId());
+					x.setCounter(99);
+					header.addItem(x);
+				} else {
+					header.addItem(new MenuSubforum(subforum.getTitle(), subforum.getId()));
+				}
 			}
-		});
+			mAdapter.addHeader(header);
+		}
+		mAdapter.notifyDataSetChanged();
 	}
 
 	private void setLoading(boolean loading) {
@@ -182,26 +182,40 @@ public class MenuFragment extends ListFragment {
 	}
 
 	private boolean isLoggedIn() {
-		return false;
+		return ((MainActivity)getActivity()).getSessionHash() != "";
 	}
 
-	private interface CategoryCallback {
-		void onResult(boolean success, List<Category> categories);
-	}
-
-	private void getCategories(final CategoryCallback callback) {
+	private void getCategories() {
 		FPApplication.getInstance().addToRequestQueue(new StringRequest("http://www.facepunch.com/forum.php",
 				new Response.Listener<String>() {
 					@Override
 					public void onResponse(String s) {
-						callback.onResult(true, FPParser.parseCategories(s));
+						mParseTask = new CategoryParseTask();
+						mParseTask.execute(s);
 					}
 				},
 				new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError volleyError) {
-						callback.onResult(false, new ArrayList<Category>());
+						showErrorScreen(R.string.menu_error_generic);
+						setLoading(false);
 					}
 				}), "menu");
+	}
+
+	private class CategoryParseTask extends AsyncTask<String, Integer, List<Category>> {
+
+		@Override
+		protected List<Category> doInBackground(String... strings) {
+			String s = strings[0];
+			return FPParser.parseCategories(s);
+		}
+
+		@Override
+		protected void onPostExecute(List<Category> categories) {
+			super.onPostExecute(categories);
+			addCategories(categories);
+			setLoading(false);
+		}
 	}
 }
