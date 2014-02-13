@@ -202,7 +202,7 @@ public class FPParser {
 			loginResponse.error = Error.INCORRECT_USERNAME;
 			Matcher m = loginRetryPattern.matcher(response.text());
 			if (m.find()) {
-				loginResponse.retry = Integer.getInteger(m.group(0));
+				loginResponse.retry = Integer.parseInt(m.group(0));
 			} else {
 				loginResponse.retry = -1;
 			}

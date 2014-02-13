@@ -27,14 +27,10 @@ import com.egonny.facepunch.R;
 import com.egonny.facepunch.fragments.MenuFragment;
 import com.egonny.facepunch.fragments.SubforumFragment;
 import com.egonny.facepunch.model.facepunch.FPThread;
-import com.egonny.facepunch.model.facepunch.Subforum;
 import com.egonny.facepunch.model.menu.ActionItem;
 import com.egonny.facepunch.model.menu.MenuSubforum;
 import com.egonny.facepunch.util.FPParser;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -229,33 +225,33 @@ public class MainActivity extends Activity implements MenuFragment.onItemClickLi
 		editor.commit();
 	}
 
-	//TODO OMG this is ugly what am I doing
+	//FIXME OMG this is ugly what am I doing
 	private void checkLogin(final String username, final String password, final LoginCallback callback) {
-		FPApplication.getInstance().addToRequestQueue(
-				new StringRequest(Request.Method.POST,
-						"http://facepunch.com/login.php?do=login",
-						new Response.Listener<String>() {
-							@Override
-							public void onResponse(String s) {
-								FPParser.LoginResponse response = FPParser.parseLogin(s);
-								callback.onResult(response.error == null, response);
-							}
-						},
-						new Response.ErrorListener() {
-							@Override
-							public void onErrorResponse(VolleyError volleyError) {
-								callback.onResult(false, null);
-							}
-						}){
-
-					protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
-						Map<String, String> params = new HashMap<String, String>();
-						params.put("do", "login");
-						params.put("vb_login_username", username);
-						params.put("vb_login_md5password", password);
-						return params;
+		StringRequest request = new StringRequest(Request.Method.POST,
+				"http://facepunch.com/login.php?do=login",
+				new Response.Listener<String>() {
+					@Override
+					public void onResponse(String s) {
+						FPParser.LoginResponse response = FPParser.parseLogin(s);
+						callback.onResult(response.error == null, response);
 					}
-				});
+				},
+				new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError volleyError) {
+						callback.onResult(false, null);
+					}
+				}){
+
+			protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("do", "login");
+				params.put("vb_login_username", username);
+				params.put("vb_login_md5password", password);
+				return params;
+			}
+		};
+		FPApplication.getInstance().addToRequestQueue(request);
 	}
 
 	private interface LoginCallback {
