@@ -31,7 +31,12 @@ import com.egonny.facepunch.model.menu.ActionItem;
 import com.egonny.facepunch.model.menu.MenuSubforum;
 import com.egonny.facepunch.util.FPParser;
 
+import java.net.HttpCookie;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends Activity implements MenuFragment.onItemClickListener, SubforumFragment.onItemClickListener {
@@ -233,6 +238,15 @@ public class MainActivity extends Activity implements MenuFragment.onItemClickLi
 					@Override
 					public void onResponse(String s) {
 						FPParser.LoginResponse response = FPParser.parseLogin(s);
+						try {
+							List<HttpCookie> cookies = FPApplication.getInstance().getManager().getCookieStore()
+									.get(new URI("http://www.facepunch.com/"));
+							for (HttpCookie cookie: cookies) {
+								if (cookie.getName().equals("bb_sessionhash")) setSessionHash(cookie.getValue());
+							}
+						} catch (URISyntaxException e) {
+							Log.e("URISyntaxException", "Could not create URI \"http://www.facepunch.com\"", e);
+						}
 						callback.onResult(response.error == null, response);
 					}
 				},

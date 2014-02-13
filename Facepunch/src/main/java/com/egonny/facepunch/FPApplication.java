@@ -7,6 +7,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.Volley;
 
+import java.net.CookieHandler;
+import java.net.CookieManager;
+
 /**
  * Credit to Arnab Chakraborty for most of this code.
  * See http://arnab.ch/blog/2013/08/asynchronous-http-requests-in-android-using-volley/
@@ -24,6 +27,11 @@ public class FPApplication extends Application {
 	private RequestQueue mRequestQueue;
 
 	/**
+	 * Global cookie manager for HTTP requests
+	 */
+	private CookieManager mManager;
+
+	/**
 	 * A singleton instance of the application class for easy access in other places
 	 */
 	private static FPApplication sInstance;
@@ -32,6 +40,8 @@ public class FPApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		sInstance = this;
+		mManager = new CookieManager();
+		CookieHandler.setDefault(mManager);
 	}
 
 	/**
@@ -47,6 +57,13 @@ public class FPApplication extends Application {
 		}
 
 		return mRequestQueue;
+	}
+
+	/**
+	 * @return Global cookie manager
+	 */
+	public CookieManager getManager() {
+		return mManager;
 	}
 
 	/**
