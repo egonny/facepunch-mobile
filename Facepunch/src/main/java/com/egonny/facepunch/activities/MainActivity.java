@@ -69,6 +69,15 @@ public class MainActivity extends Activity implements MenuFragment.onItemClickLi
 		    }
 	    };
 
+	    // Add session cookie to CookieStore
+	    try {
+		    HttpCookie cookie = new HttpCookie("bb_sessionhash", getSessionHash());
+		    FPApplication.getInstance().getManager().getCookieStore()
+				         .add(new URI("http://www.facepunch.com/"), cookie);
+	    } catch (URISyntaxException e) {
+
+	    }
+
 	    // Set the drawer toggle as the DrawerListener
 	    mDrawerLayout.setDrawerListener(mDrawerToggle);
 	    getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -242,7 +251,10 @@ public class MainActivity extends Activity implements MenuFragment.onItemClickLi
 							List<HttpCookie> cookies = FPApplication.getInstance().getManager().getCookieStore()
 									.get(new URI("http://www.facepunch.com/"));
 							for (HttpCookie cookie: cookies) {
-								if (cookie.getName().equals("bb_sessionhash")) setSessionHash(cookie.getValue());
+								if (cookie.getName().equals("bb_sessionhash")) {
+									setSessionHash(cookie.getValue());
+									break;
+								}
 							}
 						} catch (URISyntaxException e) {
 							Log.e("URISyntaxException", "Could not create URI \"http://www.facepunch.com\"", e);
