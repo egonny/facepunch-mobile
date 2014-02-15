@@ -88,6 +88,10 @@ public class MenuFragment extends ListFragment {
 		mAdapter.notifyDataSetChanged();
 	}
 
+	public String getUsername() {
+		return ((MainActivity)getActivity()).getUsername();
+	}
+
 	public interface onItemClickListener {
 		void onSubforumClick(MenuSubforum subforum);
 		void onActionClick(ActionItem.Action action);
@@ -105,15 +109,15 @@ public class MenuFragment extends ListFragment {
 		mAccountCategory = new MenuListHeader(getResources().getString(R.string.menu_account_category));
 
 		refreshForums();
-
 	}
 
-	private void refreshAccountCategory() {
+	public void refreshAccountCategory() {
+		mAdapter.removeHeader(mAccountCategory);
 		mAccountCategory.clear();
 		Resources res = getActivity().getResources();
 		if (isLoggedIn()) {
 			// TODO: add item for user profile
-
+			mAccountCategory.addItem(new ActionItem(getUsername(), R.drawable.ic_action_person, ActionItem.Action.PROFILE));
 
 			String[] menuTitles = res.getStringArray(R.array.menu_account_logged_in);
 			TypedArray menuIcons = res.obtainTypedArray(R.array.menu_account_logged_in_icons);
@@ -121,7 +125,9 @@ public class MenuFragment extends ListFragment {
 			if (menuIcons == null || menuIcons.length() != menuTitles.length) {
 				throw new IllegalStateException("The amount of menu titles and menu icons are not equal.");
 			}
-			mAccountCategory.addItem(new ActionItem(menuTitles[0], menuIcons.getResourceId(0, -1), ActionItem.Action.PM));
+			ActionItem pm = new ActionItem(menuTitles[0], menuIcons.getResourceId(0, -1), ActionItem.Action.PM);
+			pm.setCounter(2); // Just to test counter
+			mAccountCategory.addItem(pm);
 			mAccountCategory.addItem(new ActionItem(menuTitles[1], menuIcons.getResourceId(1, -1), ActionItem.Action.SUBSCRIBED));
 			menuIcons.recycle();
 		} else {
@@ -133,12 +139,10 @@ public class MenuFragment extends ListFragment {
 			throw new IllegalStateException("The amount of menu titles and menu icons are not equal.");
 		}
 		mAccountCategory.addItem(new ActionItem(menuTitles[0], menuIcons.getResourceId(0, -1), ActionItem.Action.POPULAR));
-
-		mAdapter.removeHeader(mAccountCategory);
-		mAdapter.addHeader(mAccountCategory);
+		mAdapter.addHeader(mAccountCategory, 0);
 	}
 
-	private void refreshForums() {
+	public void refreshForums() {
 		//TODO not really ideal, find a way to refresh the forums without having to reload the account category.
 		mAdapter.clear();
 		refreshAccountCategory();
@@ -151,14 +155,7 @@ public class MenuFragment extends ListFragment {
 		for (Category category : categories) {
 			MenuListHeader header = new MenuListHeader(category.getName());
 			for (Subforum subforum : category.getSubforums()) {
-				if (subforum.getId() == 6) {
-					// Just a test to see if counter is working
-					MenuSubforum x = new MenuSubforum(subforum.getTitle(), subforum.getId());
-					x.setCounter(99);
-					header.addItem(x);
-				} else {
 					header.addItem(new MenuSubforum(subforum.getTitle(), subforum.getId()));
-				}
 			}
 			mAdapter.addHeader(header);
 		}
@@ -182,7 +179,7 @@ public class MenuFragment extends ListFragment {
 	}
 
 	private boolean isLoggedIn() {
-		return ((MainActivity)getActivity()).getSessionHash() != "";
+		return !((MainActivity) getActivity()).getSessionHash().equals("");
 	}
 
 	private void getCategories() {

@@ -37,10 +37,10 @@
     <!-- TODO add correct icons to drawables -->
     <array name="menu_account_logged_in_icons">
         <item>@drawable/ic_pm</item>
-        <item>@drawable/ic_pm</item>
+        <item>@drawable/ic_action_important</item>
     </array>
     <array name="menu_account_icons">
-        <item>@drawable/ic_pm</item>
+        <item>@drawable/ic_action_group</item>
     </array>
 
 </resources>

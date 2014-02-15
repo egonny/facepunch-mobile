@@ -171,7 +171,9 @@ public class MainActivity extends Activity implements MenuFragment.onItemClickLi
 			@Override
 			public void onResult(boolean success, FPParser.LoginResponse response) {
 				if (success) {
+					setUsername(response.username);
 					Toast.makeText(MainActivity.this, "Successfully logged in!", Toast.LENGTH_SHORT).show();
+					mMenuFragment.refreshAccountCategory();
 				} else if (response.error == FPParser.Error.INCORRECT_USERNAME) {
 					Toast.makeText(MainActivity.this, "Failed to log in, try again later. Retry " + response.retry +" of 5", Toast.LENGTH_SHORT).show();
 				} else if (response.error == FPParser.Error.RETRIES_LIMIT_REACHED) {
@@ -228,14 +230,30 @@ public class MainActivity extends Activity implements MenuFragment.onItemClickLi
 	}
 
 	public String getSessionHash() {
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		return settings.getString("sessionHash", "");
+		return getStringPref("sessionHash");
 	}
 
 	public void setSessionHash(String hash) {
+		setStringPref("sessionHash", hash);
+	}
+
+	public String getUsername() {
+		return getStringPref("username");
+	}
+
+	public void setUsername(String username) {
+		setStringPref("username", username);
+	}
+
+	public String getStringPref(String key) {
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		return settings.getString(key, "");
+	}
+
+	public void setStringPref(String key, String value) {
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 		SharedPreferences.Editor editor = settings.edit();
-		editor.putString("sessionHash", hash);
+		editor.putString(key, value);
 		editor.commit();
 	}
 
