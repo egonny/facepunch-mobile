@@ -62,7 +62,7 @@ public class FPApplication extends Application {
 	/**
 	 * @return Global cookie manager
 	 */
-	public CookieManager getManager() {
+	public CookieManager getCookieManager() {
 		return mManager;
 	}
 

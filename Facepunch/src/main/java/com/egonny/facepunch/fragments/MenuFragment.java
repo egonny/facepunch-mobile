@@ -114,7 +114,6 @@ public class MenuFragment extends ListFragment {
 		if (isLoggedIn()) {
 			// TODO: add item for user profile
 
-
 			String[] menuTitles = res.getStringArray(R.array.menu_account_logged_in);
 			TypedArray menuIcons = res.obtainTypedArray(R.array.menu_account_logged_in_icons);
 

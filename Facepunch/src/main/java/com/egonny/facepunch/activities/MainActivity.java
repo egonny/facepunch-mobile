@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -34,7 +33,6 @@ import com.egonny.facepunch.util.FPParser;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -239,7 +237,7 @@ public class MainActivity extends Activity implements MenuFragment.onItemClickLi
 					public void onResponse(String s) {
 						FPParser.LoginResponse response = FPParser.parseLogin(s);
 						try {
-							List<HttpCookie> cookies = FPApplication.getInstance().getManager().getCookieStore()
+							List<HttpCookie> cookies = FPApplication.getInstance().getCookieManager().getCookieStore()
 									.get(new URI("http://www.facepunch.com/"));
 							for (HttpCookie cookie: cookies) {
 								if (cookie.getName().equals("bb_sessionhash")) setSessionHash(cookie.getValue());
