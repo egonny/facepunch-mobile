@@ -37,7 +37,9 @@ public class MenuFragment extends ListFragment {
 	private MenuListHeader mAccountCategory;
 
 	private LinearLayout mProgressFooter;
+	private boolean mLoading;
 	private LinearLayout mErrorFooter;
+	private boolean mError;
 
 	private CategoryParseTask mParseTask;
 
@@ -48,6 +50,14 @@ public class MenuFragment extends ListFragment {
 		return inflater.inflate(R.layout.fragment_menu, container, false);
 	}
 
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		setListAdapter(null);
+		mProgressFooter = null;
+		mErrorFooter = null;
+	}
+
 	public void onStart() {
 		super.onStart();
 		if (mAdapter == null) {
@@ -55,23 +65,25 @@ public class MenuFragment extends ListFragment {
 			getListView().addFooterView(mProgressFooter);
 			getListView().removeFooterView(mProgressFooter);
 
-			Button retryButton = (Button) mErrorFooter.findViewById(R.id.menu_footer_error_button);
-			retryButton.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					refreshForums();
-				}
-			});
-
-			setAdapter(new MenuAdapter(getActivity()));
+			mAdapter = new MenuAdapter(getActivity());
+			setListAdapter(mAdapter);
 			load();
+		} else {
+			// I assume this is in case the fragment is retained, so we need to recreate the footers
+			setListAdapter(mAdapter);
+			setLoading(mLoading);
+			if (mError) showErrorScreen();
+			else hideErrorScreen();
 		}
+		Button retryButton = (Button) mErrorFooter.findViewById(R.id.menu_footer_error_button);
+		retryButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				refreshForums();
+			}
+		});
 	}
 
-	public void setAdapter(MenuAdapter adapter) {
-		mAdapter = adapter;
-		setListAdapter(adapter);
-	}
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
@@ -86,6 +98,10 @@ public class MenuFragment extends ListFragment {
 		}
 		mAdapter.setSelectedItem(item);
 		mAdapter.notifyDataSetChanged();
+	}
+
+	public String getUsername() {
+		return ((MainActivity)getActivity()).getUsername();
 	}
 
 	public interface onItemClickListener {
@@ -105,14 +121,15 @@ public class MenuFragment extends ListFragment {
 		mAccountCategory = new MenuListHeader(getResources().getString(R.string.menu_account_category));
 
 		refreshForums();
-
 	}
 
-	private void refreshAccountCategory() {
+	public void refreshAccountCategory() {
+		mAdapter.removeHeader(mAccountCategory);
 		mAccountCategory.clear();
 		Resources res = getActivity().getResources();
 		if (isLoggedIn()) {
 			// TODO: add item for user profile
+			mAccountCategory.addItem(new ActionItem(getUsername(), R.drawable.ic_action_person, ActionItem.Action.PROFILE));
 
 			String[] menuTitles = res.getStringArray(R.array.menu_account_logged_in);
 			TypedArray menuIcons = res.obtainTypedArray(R.array.menu_account_logged_in_icons);
@@ -120,7 +137,9 @@ public class MenuFragment extends ListFragment {
 			if (menuIcons == null || menuIcons.length() != menuTitles.length) {
 				throw new IllegalStateException("The amount of menu titles and menu icons are not equal.");
 			}
-			mAccountCategory.addItem(new ActionItem(menuTitles[0], menuIcons.getResourceId(0, -1), ActionItem.Action.PM));
+			ActionItem pm = new ActionItem(menuTitles[0], menuIcons.getResourceId(0, -1), ActionItem.Action.PM);
+			pm.setCounter(2); // Just to test counter
+			mAccountCategory.addItem(pm);
 			mAccountCategory.addItem(new ActionItem(menuTitles[1], menuIcons.getResourceId(1, -1), ActionItem.Action.SUBSCRIBED));
 			menuIcons.recycle();
 		} else {
@@ -132,12 +151,10 @@ public class MenuFragment extends ListFragment {
 			throw new IllegalStateException("The amount of menu titles and menu icons are not equal.");
 		}
 		mAccountCategory.addItem(new ActionItem(menuTitles[0], menuIcons.getResourceId(0, -1), ActionItem.Action.POPULAR));
-
-		mAdapter.removeHeader(mAccountCategory);
-		mAdapter.addHeader(mAccountCategory);
+		mAdapter.addHeader(mAccountCategory, 0);
 	}
 
-	private void refreshForums() {
+	public void refreshForums() {
 		//TODO not really ideal, find a way to refresh the forums without having to reload the account category.
 		mAdapter.clear();
 		refreshAccountCategory();
@@ -150,14 +167,7 @@ public class MenuFragment extends ListFragment {
 		for (Category category : categories) {
 			MenuListHeader header = new MenuListHeader(category.getName());
 			for (Subforum subforum : category.getSubforums()) {
-				if (subforum.getId() == 6) {
-					// Just a test to see if counter is working
-					MenuSubforum x = new MenuSubforum(subforum.getTitle(), subforum.getId());
-					x.setCounter(99);
-					header.addItem(x);
-				} else {
-					header.addItem(new MenuSubforum(subforum.getTitle(), subforum.getId()));
-				}
+				header.addItem(new MenuSubforum(subforum.getTitle(), subforum.getId()));
 			}
 			mAdapter.addHeader(header);
 		}
@@ -165,23 +175,32 @@ public class MenuFragment extends ListFragment {
 	}
 
 	private void setLoading(boolean loading) {
+		mLoading = loading;
 		ListView l = getListView();
-		if (loading) l.addFooterView(mProgressFooter);
-		else l.removeFooterView(mProgressFooter);
+		if (l != null) {
+			if (loading) l.addFooterView(mProgressFooter);
+			else l.removeFooterView(mProgressFooter);
+		}
+	}
+
+	private void showErrorScreen() {
+		showErrorScreen(R.string.menu_error_generic);
 	}
 
 	private void showErrorScreen(int resid) {
 		getListView().addFooterView(mErrorFooter);
 		TextView errorText = (TextView) mErrorFooter.findViewById(R.id.menu_footer_error_text);
 		errorText.setText(resid);
+		mError = true;
 	}
 
 	private void hideErrorScreen() {
 		getListView().removeFooterView(mErrorFooter);
+		mError = false;
 	}
 
 	private boolean isLoggedIn() {
-		return ((MainActivity)getActivity()).getSessionHash() != "";
+		return !((MainActivity) getActivity()).getSessionHash().equals("");
 	}
 
 	private void getCategories() {

@@ -209,9 +209,9 @@ public class FPParser {
 		} else if (response.text().contains("failed login quota!")) {
 			loginResponse.error = Error.RETRIES_LIMIT_REACHED;
 		} else {
-			String s = response.text().substring(26);
-			s = s.substring(0, s.length()-1);
-			loginResponse.username = s;
+			String name = response.text().substring(26);
+			name = name.substring(0, name.length() - 1);
+			loginResponse.username = name;
 		}
 		return loginResponse;
 	}

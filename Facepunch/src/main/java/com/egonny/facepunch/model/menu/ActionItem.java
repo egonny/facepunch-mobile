@@ -17,6 +17,7 @@ public class ActionItem extends MenuListItem {
 		LOG_IN,
 		PM,
 		POPULAR,
-		SUBSCRIBED
+		SUBSCRIBED,
+		PROFILE
 	}
 }
