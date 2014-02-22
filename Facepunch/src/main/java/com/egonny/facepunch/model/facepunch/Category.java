@@ -5,15 +5,18 @@ import com.egonny.facepunch.model.menu.MenuListHeader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Category extends MenuListHeader {
+public class Category {
 
 	private String name;
 	private List<Subforum> subforums;
 
 	public Category(String name) {
-		super(name);
 		this.name = name;
 		this.subforums = new ArrayList<Subforum>();
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public void addSubforum(Subforum subforum) {

@@ -20,6 +20,7 @@ import com.egonny.facepunch.model.facepunch.FPPost;
 import com.egonny.facepunch.model.facepunch.FPThread;
 import com.egonny.facepunch.model.facepunch.Subforum;
 import com.egonny.facepunch.model.menu.MenuListItem;
+import com.egonny.facepunch.model.menu.MenuSubforum;
 import com.egonny.facepunch.util.FPParser;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class SubforumFragment extends ListFragment implements AbsListView.OnScro
 	private SubforumAdapter mAdapter;
 	private onItemClickListener mListener;
 
-	private Subforum mSubforum;
+	private MenuSubforum mSubforum;
 	private int mCurrentPage;
 
 	@Override
@@ -92,7 +93,7 @@ public class SubforumFragment extends ListFragment implements AbsListView.OnScro
 		mListener = listener;
 	}
 
-	public void load(Subforum subforum) {
+	public void load(MenuSubforum subforum) {
 		mSubforum = subforum;
 		mCurrentPage = 1;
 		mAdapter.clear();

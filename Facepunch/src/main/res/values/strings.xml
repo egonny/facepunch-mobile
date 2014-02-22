@@ -12,5 +12,35 @@
 	<string name="jump_to_page_OK">OK</string>
 	<string name="jump_to_page">Jump to page</string>
 	<string name="jump_to_page_cancel">Cancel</string>
+    <string name="menu_icon_desc">Icon</string>
+    <string name="menu_login">Log in</string>
+
+    <!-- Menu Items, keep in order! -->
+    <!-- Menu List Item Names -->
+    <string name="menu_account_category">Account</string>
+    <string name="menu_error_retry_button">Retry</string>
+    <string name="menu_error_generic">Failed to load</string>
+    <string name="login_title">Login</string>
+    <string name="login_OK">OK</string>
+    <string name="login_cancel">Cancel</string>
+    <string name="login_name">Name</string>
+    <string name="login_password">Password</string>
+    <string-array name="menu_account_logged_in">
+        <item>Messages</item>
+        <item>Subscribed Threads</item>
+    </string-array>
+    <string-array name="menu_account">
+        <item>Popular Threads</item>
+    </string-array>
+
+    <!-- Menu List Item Icons -->
+    <!-- TODO add correct icons to drawables -->
+    <array name="menu_account_logged_in_icons">
+        <item>@drawable/ic_pm</item>
+        <item>@drawable/ic_action_important</item>
+    </array>
+    <array name="menu_account_icons">
+        <item>@drawable/ic_action_group</item>
+    </array>
 
 </resources>

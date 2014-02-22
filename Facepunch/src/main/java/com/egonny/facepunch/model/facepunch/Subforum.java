@@ -1,9 +1,6 @@
 package com.egonny.facepunch.model.facepunch;
 
-import com.egonny.facepunch.model.menu.NetworkMenuListItem;
-import com.egonny.facepunch.util.headeradapter.HeaderListHeader;
-
-public class Subforum extends NetworkMenuListItem {
+public class Subforum{
 
 	private String title;
 	private int id;
@@ -11,10 +8,13 @@ public class Subforum extends NetworkMenuListItem {
 	private int pages;
 
 	public Subforum(String title, int id) {
-		super(title);
 		this.title = title;
 		this.id = id;
 		pages = 1;
+	}
+
+	public String getTitle() {
+		return title;
 	}
 
 	public int getId() {
@@ -40,15 +40,5 @@ public class Subforum extends NetworkMenuListItem {
 	@Override
 	public String toString() {
 		return "Subforum: " + title + ", id=" + id;
-	}
-
-	@Override
-	public HeaderListHeader getHeader() {
-		return category;
-	}
-
-	@Override
-	protected String getImageUrl() {
-		return "http://www.facepunch.com/fp/forums/" + id + ".png";
 	}
 }
