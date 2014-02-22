@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import com.egonny.facepunch.R;
-import com.egonny.facepunch.fragments.SubforumFragment;
 import com.egonny.facepunch.model.facepunch.FPThread;
 
 public class SubforumAdapter extends ArrayAdapter<FPThread> {

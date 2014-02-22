@@ -1,16 +1,24 @@
 <resources>
+	<!-- General colors -->
 	<color name="FP_red">#ff950001</color>
 	<color name="dark_gray">#ff3a3a3c</color>
 	<color name="light_gray">#ffd1d1d1</color>
-	<color name="weak_yellow">#fff1ed84</color>
-	<color name="weak_purple">#8888aa</color>
+
+	<!-- Menu specific -->
+	<color name="menu_item_background_selected">#ff0099cc</color>
+	<color name="counter_text_bg">@color/FP_red</color>
+
+	<!-- Subforum specific -->
+	<color name="subforum_primary">#333333</color>
+	<color name="subforum_secondary">#555555</color>
+
+	<!-- Thread specific -->
 	<color name="regular_user">#114477</color>
 	<color name="gold_user">#ac793e</color>
 	<color name="mod_user">#009900</color>
-	<color name="thread_background">#e5e5e5</color>
-	<color name="thread_secondary">#666666</color>
 	<color name="thread_primary">#333333</color>
+	<color name="thread_secondary">#666666</color>
+	<color name="thread_background">#e5e5e5</color>
 	<color name="lighter_gray">#eeeeee</color>
-    <color name="menu_item_background_selected">#ff0099cc</color>
-    <color name="counter_text_bg">@color/FP_red</color>
+
 </resources>

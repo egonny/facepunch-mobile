@@ -14,32 +14,35 @@
         <TextView android:layout_height="wrap_content"
                   android:layout_width="match_parent"
                   android:id="@+id/subforum_item_title"
-                  android:textColor="@android:color/secondary_text_light"
+                  android:textColor="@color/subforum_primary"
                   android:textSize="18sp"
-                  android:fontFamily="sans-serif" android:maxLines="3" android:ellipsize="end"/>
+                  android:fontFamily="sans-serif-light"
+                  android:maxLines="3"
+                  android:ellipsize="end"/>
         <TextView android:layout_height="wrap_content"
                   android:layout_width="wrap_content"
                   android:drawableLeft="@drawable/subforum_item_author"
                   android:id="@+id/subforum_item_author"
                   android:layout_below="@+id/subforum_item_title"
-                  android:paddingLeft="4dp"/>
+                  android:paddingLeft="4dp" android:textColor="@color/subforum_primary"
+                  android:fontFamily="sans-serif-light"/>
         <TextView android:layout_height="wrap_content"
                   android:layout_width="wrap_content"
                   android:drawableLeft="@drawable/subforum_item_reading"
                   android:id="@+id/subforum_item_reading"
-                  android:textColor="@android:color/secondary_text_light"
+                  android:textColor="@color/subforum_primary"
                   android:layout_toRightOf="@+id/subforum_item_author"
                   android:layout_below="@+id/subforum_item_title"
-                  android:paddingLeft="12dp"/>
+                  android:paddingLeft="12dp" android:fontFamily="sans-serif-light"/>
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:id="@+id/subforum_item_recent"
                   android:drawableLeft="@drawable/subforum_item_recent"
                   android:layout_below="@+id/subforum_item_author"
-                  android:textColor="@android:color/secondary_text_light"
+                  android:textColor="@color/subforum_secondary"
                   android:paddingLeft="3dp"
                   android:paddingTop="2dp"
-                  android:textSize="12sp"/>
+                  android:textSize="13sp" android:fontFamily="sans-serif-light"/>
     </RelativeLayout>
     <ImageButton
             android:layout_width="wrap_content"
