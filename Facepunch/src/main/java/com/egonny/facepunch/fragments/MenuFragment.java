@@ -128,7 +128,6 @@ public class MenuFragment extends ListFragment {
 		mAccountCategory.clear();
 		Resources res = getActivity().getResources();
 		if (isLoggedIn()) {
-			// TODO: add item for user profile
 			mAccountCategory.addItem(new ActionItem(getUsername(), R.drawable.ic_action_person, ActionItem.Action.PROFILE));
 
 			String[] menuTitles = res.getStringArray(R.array.menu_account_logged_in);

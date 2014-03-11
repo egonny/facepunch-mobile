@@ -68,12 +68,17 @@ public class MainActivity extends Activity implements MenuFragment.onItemClickLi
 	    };
 
 	    // Add session cookie to CookieStore
-	    try {
-		    HttpCookie cookie = new HttpCookie("bb_sessionhash", getSessionHash());
-		    FPApplication.getInstance().getCookieManager().getCookieStore()
-				         .add(new URI("http://www.facepunch.com/"), cookie);
-	    } catch (URISyntaxException e) {
+	    if (getSessionHash().length() > 0) {
+		    try {
+			    HttpCookie cookie = new HttpCookie("bb_sessionhash", getSessionHash());
+			    cookie.setDomain(".facepunch.com");
+			    cookie.setPath("/");
+			    cookie.setVersion(0);
+			    FPApplication.getInstance().getCookieManager().getCookieStore()
+					         .add(new URI("http://www.facepunch.com/"), cookie);
+		    } catch (URISyntaxException e) {
 
+		    }
 	    }
 
 	    // Set the drawer toggle as the DrawerListener
