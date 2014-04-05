@@ -51,7 +51,7 @@ public class SubforumAdapter extends ArrayAdapter<FPThread> {
 			@Override
 			public void onClick(View view) {
 				if (mListener != null) {
-					mListener.onClick(view, thread);
+					mListener.onMenuClick(view, thread);
 				}
 			}
 		});
@@ -61,7 +61,7 @@ public class SubforumAdapter extends ArrayAdapter<FPThread> {
 	}
 
 	public interface OnDotsClickListener {
-		void onClick(View view, FPThread thread);
+		void onMenuClick(View view, FPThread thread);
 	}
 
 }

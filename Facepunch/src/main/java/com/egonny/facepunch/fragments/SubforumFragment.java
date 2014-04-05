@@ -9,17 +9,13 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.egonny.facepunch.FPApplication;
 import com.egonny.facepunch.R;
 import com.egonny.facepunch.adapters.SubforumAdapter;
-import com.egonny.facepunch.model.facepunch.FPPost;
 import com.egonny.facepunch.model.facepunch.FPThread;
-import com.egonny.facepunch.model.facepunch.Subforum;
-import com.egonny.facepunch.model.menu.MenuListItem;
 import com.egonny.facepunch.model.menu.MenuSubforum;
 import com.egonny.facepunch.util.FPParser;
 
@@ -77,7 +73,7 @@ public class SubforumFragment extends ListFragment implements AbsListView.OnScro
 	}
 
 	@Override
-	public void onClick(View view, FPThread thread) {
+	public void onMenuClick(View view, FPThread thread) {
 		PopupMenu popup = new PopupMenu(getActivity(), view);
 		Menu menu = popup.getMenu();
 		menu.add("test1");
