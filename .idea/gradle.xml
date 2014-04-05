@@ -7,8 +7,8 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/Facepunch" />
+            <option value="E:\Egon\AndroidStudioProjects\facepunch-mobile" />
+            <option value="E:\Egon\AndroidStudioProjects\facepunch-mobile\Facepunch" />
           </set>
         </option>
       </GradleProjectSettings>
