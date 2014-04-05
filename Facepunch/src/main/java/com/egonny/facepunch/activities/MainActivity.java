@@ -122,6 +122,9 @@ public class MainActivity extends Activity implements MenuFragment.onItemClickLi
 				break;
 			case SUBSCRIBED:
 				break;
+			case PROFILE:
+				Toast.makeText(this, getSessionHash(), Toast.LENGTH_SHORT);
+				break;
 		}
 	}
 
