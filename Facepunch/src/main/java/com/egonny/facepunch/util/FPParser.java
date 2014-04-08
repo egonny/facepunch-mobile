@@ -88,8 +88,8 @@ public class FPParser {
 			}
 
 			// Parse thread author
-			String name = element.select("div.author a").text();
-			String authorIdText = element.select("div.author a").attr("href");
+			String name = element.select("div.author a").get(0).text();
+			String authorIdText = element.select("div.author a").get(0).attr("href");
 			Matcher authorIdMatcher = userIdPattern.matcher(authorIdText);
 			long authorId = -1;
 			if (authorIdMatcher.find()) {
