@@ -30,6 +30,7 @@ import com.egonny.facepunch.model.menu.ActionItem;
 import com.egonny.facepunch.model.menu.MenuSubforum;
 import com.egonny.facepunch.util.FPParser;
 
+import java.net.CookieStore;
 import java.net.HttpCookie;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -68,16 +69,17 @@ public class MainActivity extends Activity implements MenuFragment.onItemClickLi
 	    };
 
 	    // Add session cookie to CookieStore
-	    if (getSessionHash().length() > 0) {
+	    CookieStore store = FPApplication.getInstance().getCookieManager().getCookieStore();
+	    if (store.getCookies().size() == 0 && getSessionHash().length() > 0) {
 		    try {
 			    HttpCookie cookie = new HttpCookie("bb_sessionhash", getSessionHash());
 			    cookie.setDomain(".facepunch.com");
 			    cookie.setPath("/");
 			    cookie.setVersion(0);
-			    FPApplication.getInstance().getCookieManager().getCookieStore()
-					         .add(new URI("http://www.facepunch.com/"), cookie);
+			    cookie.setMaxAge(-1);
+			    store.add(new URI("http://facepunch.com/"), cookie);
 		    } catch (URISyntaxException e) {
-
+			    // Statically added so shouldn't ever happen
 		    }
 	    }
 
@@ -123,7 +125,7 @@ public class MainActivity extends Activity implements MenuFragment.onItemClickLi
 			case SUBSCRIBED:
 				break;
 			case PROFILE:
-				Toast.makeText(this, getSessionHash(), Toast.LENGTH_SHORT);
+				Toast.makeText(this, getSessionHash(), Toast.LENGTH_LONG).show();
 				break;
 		}
 	}
