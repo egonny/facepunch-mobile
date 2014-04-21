@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+	<ListView
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:id="@android:id/list">
+	</ListView>
+	<ProgressBar
+			style="@android:style/Widget.Holo.Light.ProgressBar.Large"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:id="@+id/endless_fragment_progress" android:visibility="gone"/>
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	              android:orientation="vertical"
+	              android:layout_width="wrap_content"
+	              android:layout_height="wrap_content"
+				  android:id="@+id/endless_fragment_error" android:layout_gravity="center" android:visibility="gone">
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:fontFamily="sans-serif-light"
+				android:textSize="18sp"
+				android:layout_margin="8dp"
+				android:id="@+id/endless_fragment_error_text"/>
+		<Button
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/endless_fragment_error_button"/>
+	</LinearLayout>
+</FrameLayout>

@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.LinearLayout;
+import com.egonny.facepunch.R;
 import com.egonny.facepunch.adapters.PagedAdapter;
 
 import java.util.List;
@@ -14,6 +16,32 @@ public abstract class EndlessListFragment<T> extends ListFragment implements Abs
 
 	protected PagedAdapter<T> mAdapter;
 	protected int mPageCount = -1;
+
+	//TODO: Remove LinearLayouts from headers/footers, use <merge> instead?
+	/**
+	 * The view that will be used to show the progressbar as header/footer
+	 */
+	protected LinearLayout mProgressFooter;
+
+	/**
+	 * Gives the position that is currently loading. Returns null if not loading.
+	 */
+	protected Position mLoading;
+
+	/**
+	 * The view that will be used to show errors as header/footer
+	 */
+	protected LinearLayout mErrorFooter;
+
+	/**
+	 * Gives the position that shows an error. Returns null if not loading.
+	 */
+	protected Position mError;
+
+	/**
+	 * The view that will be shown as header and, when pressed, will load a previous page.
+	 */
+	protected LinearLayout mHeaderButton;
 
 	public static final int BOTTOM_PAGE_LOAD_THRESHOLD = 5;
 
@@ -31,7 +59,12 @@ public abstract class EndlessListFragment<T> extends ListFragment implements Abs
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return super.onCreateView(inflater, container, savedInstanceState);
+		// Load main view
+		View root = inflater.inflate(R.layout.fragment_endless_layout, null);
+		// Load headers and footers (to be added dynamically)
+		mProgressFooter = (LinearLayout) inflater.inflate(R.layout.endless_list_progress, null);
+		mErrorFooter = (LinearLayout) inflater.inflate(R.layout.endless_list_error, null);
+		return root;
 	}
 
 	@Override
@@ -90,13 +123,14 @@ public abstract class EndlessListFragment<T> extends ListFragment implements Abs
 			mAdapter.addPreviousPage(items);
 		} else if (mAdapter.getLastPage() + 1 == page) {
 			mAdapter.addNextPage(items);
-		}
+		} else return;
+		setLoading(false, null);
 	}
 
 	public void load(int page) {
 		if (page < 1) throw new IllegalArgumentException("Invalid page");
 		mAdapter.clear();
-		setLoading(true);
+		setLoading(true, Position.GENERAL);
 		getPage(page);
 	}
 
@@ -104,7 +138,7 @@ public abstract class EndlessListFragment<T> extends ListFragment implements Abs
 	 * Loads the page after the last one currently loaded.
 	 */
 	protected void loadNext() {
-		setLoading(true);
+		setLoading(true, Position.FOOTER);
 		getPage(mAdapter.getLastPage() + 1);
 	}
 
@@ -112,8 +146,16 @@ public abstract class EndlessListFragment<T> extends ListFragment implements Abs
 	 * Loads the page before the first one currently loaded.
 	 */
 	protected void loadPrevious() {
-		setLoading(true);
+		setLoading(true, Position.HEADER);
 		getPage(mAdapter.getFirstPage() - 1);
+	}
+
+	public boolean isLoading() {
+		return mLoading != null;
+	}
+
+	protected void setLoading(boolean loading, Position position) {
+
 	}
 
 	protected void setError(String error) {
@@ -121,10 +163,6 @@ public abstract class EndlessListFragment<T> extends ListFragment implements Abs
 	}
 
 	protected void setError(int resId) {
-
-	}
-
-	protected void setLoading(boolean loading) {
 
 	}
 
@@ -139,5 +177,11 @@ public abstract class EndlessListFragment<T> extends ListFragment implements Abs
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 		// Must be empty
+	}
+
+	protected enum Position {
+		HEADER,
+		FOOTER,
+		GENERAL
 	}
 }
