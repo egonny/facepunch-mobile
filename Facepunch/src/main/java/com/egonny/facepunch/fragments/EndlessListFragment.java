@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import com.egonny.facepunch.R;
 import com.egonny.facepunch.adapters.PagedAdapter;
 
@@ -43,13 +45,15 @@ public abstract class EndlessListFragment<T> extends ListFragment implements Abs
 	 */
 	protected LinearLayout mHeaderButton;
 
-	public static final int BOTTOM_PAGE_LOAD_THRESHOLD = 5;
+	public static final int BOTTOM_LOAD_THRESHOLD = 5;
 
 	public void onStart() {
 		super.onStart();
 		if (mAdapter == null) {
 			// Required to add a footer before the adapter gets set, so Android doesn't freak out.
-			mAdapter = getAdapter();
+			mAdapter = createAdapter();
+			getListView().addHeaderView(mProgressFooter);
+			getListView().removeHeaderView(mProgressFooter);
 			setListAdapter(mAdapter);
 		} else {
 			// I assume this is in case the fragment is retained, so we need to recreate the footers
@@ -76,7 +80,7 @@ public abstract class EndlessListFragment<T> extends ListFragment implements Abs
 	/**
 	 * This function should return the adapter needed for this ListFragment to run.
 	 */
-	protected abstract PagedAdapter<T> getAdapter();
+	protected abstract PagedAdapter<T> createAdapter();
 
 	/**
 	 * Returns the amount of pages this list can at most contain.
@@ -127,8 +131,15 @@ public abstract class EndlessListFragment<T> extends ListFragment implements Abs
 		setLoading(false, null);
 	}
 
+	/**
+	 * Clears the list and loads a given page.
+	 * @param page
+	 *        The given page to load.
+	 * @throws java.lang.IllegalArgumentException
+	 *        Thrown when the given page is not within the range of pages that can be loaded.
+	 */
 	public void load(int page) {
-		if (page < 1) throw new IllegalArgumentException("Invalid page");
+		if (page < 1 || page > getPageCount()) throw new IllegalArgumentException("Invalid page");
 		mAdapter.clear();
 		setLoading(true, Position.GENERAL);
 		getPage(page);
@@ -154,22 +165,112 @@ public abstract class EndlessListFragment<T> extends ListFragment implements Abs
 		return mLoading != null;
 	}
 
+	/**
+	 * Changes the loading state of the fragment.
+	 * @param loading
+	 *        Whether or not this fragment should be in the loading state.
+	 * @param position
+	 *        The position that should show as loading (header, footer or general area).
+	 *        This argument will be ignored if loading is false.
+	 */
 	protected void setLoading(boolean loading, Position position) {
-
+		if (loading == isLoading()) return; //We're already loading something, we should not be loading something else.
+		hideErrors();
+		ListView listView = getListView();
+		if (listView == null) throw new IllegalStateException("Could not retrieve the ListView of this fragment.");
+		if (loading) mLoading = position;
+		switch (mLoading) {
+			case HEADER:
+				if (loading) listView.addHeaderView(mProgressFooter);
+				else listView.removeHeaderView(mProgressFooter);
+				break;
+			case FOOTER:
+				if (loading) listView.addFooterView(mProgressFooter);
+				else listView.removeFooterView(mProgressFooter);
+				break;
+			case GENERAL:
+				View root = getView();
+				if (root == null) throw new IllegalStateException("Could not retrieve the root View of this fragment.");
+				if (loading) {
+					listView.setVisibility(View.GONE);
+					root.findViewById(R.id.endless_fragment_progress).setVisibility(View.VISIBLE);
+				} else {
+					listView.setVisibility(View.VISIBLE);
+					root.findViewById(R.id.endless_fragment_progress).setVisibility(View.GONE);
+				}
+				break;
+		}
+		if (!loading) mLoading = null;
 	}
 
+	/**
+	 * Shows a certain error at the position that was previously loading.
+	 * It will only show the error if the fragment is loading at the time of the call.
+	 * @param error
+	 *        The error to be shown.
+	 */
 	protected void setError(String error) {
-
+		if (!isLoading()) return;
+		mError = mLoading;
+		setLoading(false, null);
+		ListView listView = getListView();
+		if (listView == null) throw new IllegalStateException("Could not retrieve the ListView of this fragment.");
+		switch (mError) {
+			case HEADER:
+				listView.addHeaderView(mErrorFooter);
+				TextView text = (TextView) mErrorFooter.findViewById(R.id.endless_list_error_text);
+				text.setText(error);
+				break;
+			case FOOTER:
+				listView.addFooterView(mErrorFooter);
+				text = (TextView) mErrorFooter.findViewById(R.id.endless_list_error_text);
+				text.setText(error);
+				break;
+			case GENERAL:
+				View root = getView();
+				if (root == null) throw new IllegalStateException("Could not retrieve the root View of this fragment.");
+				listView.setVisibility(View.GONE);
+				root.findViewById(R.id.endless_fragment_error).setVisibility(View.VISIBLE);
+				text = (TextView) root.findViewById(R.id.endless_fragment_error_text);
+				text.setText(error);
+				break;
+		}
 	}
 
 	protected void setError(int resId) {
+		setError(getResources().getString(resId));
+	}
 
+	protected void setError() {
+		setError(R.string.endless_list_generic_error);
+	}
+
+	/**
+	 * Hides the errors that are shown at the moment.
+	 */
+	protected void hideErrors() {
+		ListView listView = getListView();
+		if (listView == null) throw new IllegalStateException("Could not retrieve the ListView of this fragment.");
+		switch(mError) {
+			case HEADER:
+				listView.removeHeaderView(mErrorFooter);
+				break;
+			case FOOTER:
+				listView.removeFooterView(mErrorFooter);
+				break;
+			case GENERAL:
+				View root = getView();
+				if (root == null) throw new IllegalStateException("Could not retrieve the root View of this fragment.");
+				listView.setVisibility(View.VISIBLE);
+				root.findViewById(R.id.endless_fragment_error).setVisibility(View.GONE);
+				break;
+		}
 	}
 
 	@Override
 	public void onScrollStateChanged(AbsListView listView, int scrollState) {
 		if (scrollState == SCROLL_STATE_IDLE) {
-			if (listView.getLastVisiblePosition() >= listView.getCount() - BOTTOM_PAGE_LOAD_THRESHOLD) {
+			if (listView.getLastVisiblePosition() >= listView.getCount() - BOTTOM_LOAD_THRESHOLD) {
 			}
 		}
 	}

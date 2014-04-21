@@ -5,4 +5,17 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/endless_list_error_text" android:textColor="@android:color/white" android:fontFamily="sans-serif-light"
+			android:layout_gravity="center_horizontal" android:textSize="18sp" android:layout_margin="8dp"/>
+	<Button
+			style="?android:attr/buttonStyleSmall"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/endless_list_retry_button"
+			android:id="@+id/endless_list_error_button"
+			android:textColor="@android:color/white"
+			android:layout_gravity="center_horizontal"/>
 </LinearLayout>

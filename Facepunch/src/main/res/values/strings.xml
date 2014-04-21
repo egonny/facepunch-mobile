@@ -25,7 +25,9 @@
     <string name="login_cancel">Cancel</string>
     <string name="login_name">Name</string>
     <string name="login_password">Password</string>
-    <string-array name="menu_account_logged_in">
+	<string name="endless_list_retry_button">Retry</string>
+	<string name="endless_list_generic_error">Failed to load.</string>
+	<string-array name="menu_account_logged_in">
         <item>Messages</item>
         <item>Subscribed Threads</item>
     </string-array>
